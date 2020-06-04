@@ -8,7 +8,6 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
     public class Tag : BaseEntity
     {
        public string Name { get; set; }
-       public string DoUId { get; set; }
 
         public override async Task Create(DigitalOceanDbContext dbContext)
         {

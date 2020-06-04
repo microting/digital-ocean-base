@@ -1,11 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 {
     public class Droplet : BaseEntity
     {
+        public Droplet()
+        {
+            DropletTags = new List<DropletTag>();
+        }
+
         public string DoUid { get; set; }
         public int CustomerNo { get; set; }//// leave it empty
         public string PublicIpV4 { get; set; }
@@ -20,6 +27,10 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public bool IpV6Enabled { get; set; }
         public bool BackupsEnabled { get; set; }
         public Size Size { get; set; }
+        public List<DropletTag> DropletTags { get; set; }
+
+        [ForeignKey("Id")]
+        public int Sizeid { get; set; }
 
         public override async Task Create(DigitalOceanDbContext dbContext)
         {

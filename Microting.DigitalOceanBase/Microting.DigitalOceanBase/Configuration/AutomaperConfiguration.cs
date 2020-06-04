@@ -22,8 +22,15 @@ namespace Microting.DigitalOceanBase.Configuration
                 .ForMember(t => t.PublicIpV6, opts => opts.MapFrom(m => m.Networks.V6.FirstOrDefault(g => g.Type == "public") == null ? null : m.Networks.V6.FirstOrDefault(g => g.Type == "public").IpAddress))
                 .ForMember(t => t.PrivateIpV4, opts => opts.MapFrom(m => m.Networks.V4.FirstOrDefault(g => g.Type != "public") == null ? null : m.Networks.V4.FirstOrDefault(g => g.Type != "public").IpAddress))
                 .ForMember(t => t.PublicIpV4, opts => opts.MapFrom(m => m.Networks.V4.FirstOrDefault(g => g.Type == "public") == null ? null : m.Networks.V4.FirstOrDefault(g => g.Type == "public").IpAddress));
+
+            cfg.CreateMap<DigitalOcean.API.Models.Responses.Image, Image>()
+               .ForMember(t => t.Id, opts => opts.Ignore())
+               .ForMember(t => t.DoUid, opts => opts.MapFrom(m => m.Id))
+               .ForMember(t => t.ImageCreatedAt, opts => opts.MapFrom(m => m.CreatedAt));
             cfg.CreateMap<DigitalOcean.API.Models.Responses.Size, Size>();
             cfg.CreateMap<string, Region>()
+                .ForMember(t => t.Name, opts => opts.MapFrom(m => m));
+            cfg.CreateMap<string, Tag>()
                 .ForMember(t => t.Name, opts => opts.MapFrom(m => m));
             cfg.CreateMap<Image, Image>();
             cfg.CreateMap<CreateDropletRequest, DigitalOcean.API.Models.Requests.Droplet>();

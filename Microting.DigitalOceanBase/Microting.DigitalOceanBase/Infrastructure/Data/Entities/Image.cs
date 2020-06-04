@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
@@ -9,6 +10,20 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
     {
         public int DoUid { get; set; }
         public string Name { get; set; }
+
+        public string Type { get; set; }
+        public string Distribution { get; set; }
+        public string Slug { get; set; }
+        public bool Public { get; set; }
+        //public List<Region> Regions { get; set; }
+        public DateTime ImageCreatedAt { get; set; }
+        public int MinDiskSize { get; set; }
+        public double SizeGigabytes { get; set; }
+        public string Description { get; set; }
+        //public List<Tag> Tags { get; set; }
+        public string Status { get; set; }
+        public string ErrorMessage { get; set; }
+
 
         public override async Task Create(DigitalOceanDbContext dbContext)
         {
@@ -51,6 +66,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
             if (dbContext.ChangeTracker.HasChanges())
             {
+                record.Id = 0;
                 record.UpdatedAt = DateTime.UtcNow;
                 record.UpdatedByUserId = UpdatedByUserId;
                 record.Version += 1;

@@ -24,7 +24,7 @@ namespace Microting.DigitalOceanBase.App
             var manager = serviceProvider.GetService<IDigitalOceanManager>();
 
             Task.WaitAll( manager.FetchDroplets(11));
-
+            Console.WriteLine("Done");
             Console.ReadLine();
         }
     }

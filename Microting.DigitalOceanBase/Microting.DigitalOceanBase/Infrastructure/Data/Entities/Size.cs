@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
@@ -16,7 +15,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public int Memory { get; set; }
         public int Vcpus { get; set; }
         public int Disk { get; set; }
-        public List<string> Regions { get; set; }
+        public List<Region> Regions { get; set; }
         public bool Available { get; set; }
 
         public override async Task Create(DigitalOceanDbContext dbContext)

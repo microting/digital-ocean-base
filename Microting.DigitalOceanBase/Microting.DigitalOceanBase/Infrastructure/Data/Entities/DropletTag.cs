@@ -1,14 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 {
     public class DropletTag : BaseEntity
     {
+        [ForeignKey("Id")]
         public int DropletId { get; set; }
+
+        [ForeignKey("Id")]
         public int TagId { get; set; }
+
+        public Droplet Droplet { get; set; }
+        public Tag Tag { get; set; }
 
         public override async Task Create(DigitalOceanDbContext dbContext)
         {
@@ -30,6 +37,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
             if (dbContext.ChangeTracker.HasChanges())
             {
+                record.Id = 0;
                 record.UpdatedAt = DateTime.UtcNow;
                 record.UpdatedByUserId = UpdatedByUserId;
                 record.Version += 1;
