@@ -34,10 +34,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
         public override async Task Create(DigitalOceanDbContext dbContext)
         {
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
-            Version = 1;
-            WorkflowState = Constants.WorkflowStates.Created;
+            SetInitialCreateData();
 
             await dbContext.Droplets.AddAsync(this);
             await dbContext.SaveChangesAsync();
@@ -55,10 +52,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.Id = 0;
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.Droplets.AddAsync(record);
                 await dbContext.SaveChangesAsync();
@@ -73,14 +67,11 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             if (record == null)
                 throw new NullReferenceException($"Could not find record { this.GetType().Name } with ID: {Id}");
 
-            record = Mapper.Map<Droplet>(this);
+            Mapper.Map(this, record);
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.Id = 0;
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.Droplets.AddAsync(record);
                 await dbContext.SaveChangesAsync();

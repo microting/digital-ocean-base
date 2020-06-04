@@ -81,7 +81,7 @@ namespace Microting.DigitalOceanBase.Managers
                 if (image == null)
                 {
                     item.UpdatedByUserId = userId;
-                    await image.Delete(_dbContext);
+                    await item.Delete(_dbContext);
                 }
                     
             }

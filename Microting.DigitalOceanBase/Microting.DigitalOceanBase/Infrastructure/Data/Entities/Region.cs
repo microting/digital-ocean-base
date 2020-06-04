@@ -28,10 +28,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.Id = 0;
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.Regions.AddAsync(record);
                 await dbContext.SaveChangesAsync();
@@ -46,14 +43,11 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             if (record == null)
                 throw new NullReferenceException($"Could not find record { this.GetType().Name } with ID: {Id}");
 
-            record = Mapper.Map<Region>(this);
+            Mapper.Map(this, record);
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.Id = 0;
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.Regions.AddAsync(record);
                 await dbContext.SaveChangesAsync();
