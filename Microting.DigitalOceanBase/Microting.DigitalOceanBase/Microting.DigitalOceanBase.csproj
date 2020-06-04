@@ -6,8 +6,7 @@
   
   <PropertyGroup>
     <PackageId>Microting.DigitalOceanBase</PackageId>
-    <Version>0.0.1</Version>
-    <Authors>Oleksandr Humeniuk</Authors>
+    <Authors>René Schultz Madsen</Authors>
     <Company>Microting A/S</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>

@@ -4,37 +4,21 @@ using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 {
-    public class Droplet : BaseEntity
+    public class Region : BaseEntity
     {
-        public string DoUid { get; set; }
-        public int CustomerNo { get; set; }//// leave it empty
-        public string PublicIpV4 { get; set; }
-        public string PrivateIpV4 { get; set; }
-        public string PublicIpV6 { get; set; }
-        public string CurrentImageName { get; set; }
-        public string RequestedImageName { get; set; }// should be filled during rebuild
-        public int CurrentImageId { get; set; } 
-        public int RequestedImageId { get; set; }//// should be filled during rebuild
-        public string UserData { get; set; } // leave it empty
-        public bool MonitoringEnabled { get; set; }
-        public bool IpV6Enabled { get; set; }
-        public bool BackupsEnabled { get; set; }
-        public Size Size { get; set; }
+        public string Name { get; set; }
 
         public override async Task Create(DigitalOceanDbContext dbContext)
         {
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
-            Version = 1;
-            WorkflowState = Constants.WorkflowStates.Created;
+            base.SetInitialCreateData();
 
-            await dbContext.Droplets.AddAsync(this);
+            await dbContext.Regions.AddAsync(this);
             await dbContext.SaveChangesAsync();
         }
 
         public override async Task Delete(DigitalOceanDbContext dbContext)
         {
-            var  record = await dbContext.Droplets
+            var record = await dbContext.Regions
                 .FirstOrDefaultAsync(x => x.Id == Id);
 
             if (record == null)
@@ -49,20 +33,20 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
                 record.UpdatedByUserId = UpdatedByUserId;
                 record.Version += 1;
 
-                await dbContext.Droplets.AddAsync(record);
+                await dbContext.Regions.AddAsync(record);
                 await dbContext.SaveChangesAsync();
             }
         }
 
         public override async Task Update(DigitalOceanDbContext dbContext)
         {
-            var record = await dbContext.Droplets
+            var record = await dbContext.Regions
                 .FirstOrDefaultAsync(x => x.Id == Id);
 
             if (record == null)
                 throw new NullReferenceException($"Could not find record { this.GetType().Name } with ID: {Id}");
 
-            record = Mapper.Map<Droplet>(this);
+            record = Mapper.Map<Region>(this);
 
             if (dbContext.ChangeTracker.HasChanges())
             {
@@ -71,7 +55,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
                 record.UpdatedByUserId = UpdatedByUserId;
                 record.Version += 1;
 
-                await dbContext.Droplets.AddAsync(record);
+                await dbContext.Regions.AddAsync(record);
                 await dbContext.SaveChangesAsync();
             }
         }

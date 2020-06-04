@@ -23,7 +23,7 @@ namespace Microting.DigitalOceanBase.Migrations
                     DoUid = table.Column<string>(nullable: true),
                     CustomerNo = table.Column<int>(nullable: false),
                     PublicIpV4 = table.Column<string>(nullable: true),
-                    PrivateIpV4v = table.Column<string>(nullable: true),
+                    PrivateIpV4 = table.Column<string>(nullable: true),
                     PublicIpV6 = table.Column<string>(nullable: true),
                     CurrentImageName = table.Column<string>(nullable: true),
                     RequestedImageName = table.Column<string>(nullable: true),
@@ -81,6 +81,26 @@ namespace Microting.DigitalOceanBase.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PluginConfigurationValues",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    UpdatedAt = table.Column<DateTime>(nullable: true),
+                    WorkflowState = table.Column<string>(maxLength: 255, nullable: true),
+                    CreatedByUserId = table.Column<int>(nullable: false),
+                    UpdatedByUserId = table.Column<int>(nullable: false),
+                    Version = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Value = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PluginConfigurationValues", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tags",
                 columns: table => new
                 {
@@ -111,6 +131,9 @@ namespace Microting.DigitalOceanBase.Migrations
 
             migrationBuilder.DropTable(
                 name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "PluginConfigurationValues");
 
             migrationBuilder.DropTable(
                 name: "Tags");

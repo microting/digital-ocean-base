@@ -9,8 +9,8 @@ using Microting.DigitalOceanBase.Infrastructure.Data;
 namespace Microting.DigitalOceanBase.Migrations
 {
     [DbContext(typeof(DigitalOceanDbContext))]
-    [Migration("20200531095008_added_credentials")]
-    partial class added_credentials
+    [Migration("20200603073932_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,24 +18,6 @@ namespace Microting.DigitalOceanBase.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Credential", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Key")
-                        .HasColumnType("varchar(265)")
-                        .HasMaxLength(265);
-
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Credentials");
-                });
 
             modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Droplet", b =>
                 {
@@ -73,7 +55,7 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<bool>("MonitoringEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PrivateIpV4v")
+                    b.Property<string>("PrivateIpV4")
                         .HasColumnType("text");
 
                     b.Property<string>("PublicIpV4")
@@ -179,6 +161,42 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.PluginConfigurationValues", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("UpdatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorkflowState")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PluginConfigurationValues");
                 });
 
             modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Tag", b =>

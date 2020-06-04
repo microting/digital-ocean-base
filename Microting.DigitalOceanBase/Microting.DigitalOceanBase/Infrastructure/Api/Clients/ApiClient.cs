@@ -26,14 +26,11 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
 
         public async Task<List<Droplet>> GetDropletsList()
         {
-            // ensure droplet is running
             var droplets = await _doClient.Droplets.GetAll();
-            //collect public and private IP for each droplet.
-            //var droplet = droplets.First().Networks.V4[0].
-
             //collect which tags the droplets have.
             //var droplet = droplets.First().Tags
-            return droplets.ToList();
+
+            return droplets.Where(t => t.Status == "active").ToList();
         }
 
         public async Task<List<Image>> GetImagesList()

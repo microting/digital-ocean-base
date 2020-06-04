@@ -15,7 +15,9 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<DropletTag> DropletTag { get; set; }
+        public DbSet<Size> Sizes { get; set; }
+        public DbSet<Region> Regions { get; set; }
 
-        public DbSet<Credential> Credentials { get; set; }  // shoould have default methods and base entity?
+        public DbSet<PluginConfigurationValues> PluginConfigurationValues { get; set; }
     }
 }

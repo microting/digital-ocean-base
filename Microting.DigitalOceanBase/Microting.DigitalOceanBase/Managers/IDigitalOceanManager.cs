@@ -4,6 +4,6 @@ namespace Microting.DigitalOceanBase.Managers
 {
     public interface IDigitalOceanManager
     {
-        Task GetDroplets();
+        Task FetchDroplets(int userId);
     }
 }

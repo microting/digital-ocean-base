@@ -9,7 +9,7 @@ namespace Microting.DigitalOceanBase.App
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             var configuration = new ConfigurationBuilder()
             .SetBasePath(Path.Combine(AppContext.BaseDirectory))
@@ -23,7 +23,7 @@ namespace Microting.DigitalOceanBase.App
 
             var manager = serviceProvider.GetService<IDigitalOceanManager>();
 
-            await manager.GetDroplets();
+            Task.WaitAll( manager.FetchDroplets(11));
 
             Console.ReadLine();
         }
