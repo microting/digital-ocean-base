@@ -1,11 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 {
     public class Droplet : BaseEntity
     {
+        public Droplet()
+        {
+            DropletTags = new List<DropletTag>();
+        }
+
         public string DoUid { get; set; }
         public int CustomerNo { get; set; }//// leave it empty
         public string PublicIpV4 { get; set; }
@@ -20,13 +27,14 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public bool IpV6Enabled { get; set; }
         public bool BackupsEnabled { get; set; }
         public Size Size { get; set; }
+        public List<DropletTag> DropletTags { get; set; }
+
+        [ForeignKey("Id")]
+        public int Sizeid { get; set; }
 
         public override async Task Create(DigitalOceanDbContext dbContext)
         {
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
-            Version = 1;
-            WorkflowState = Constants.WorkflowStates.Created;
+            SetInitialCreateData();
 
             await dbContext.Droplets.AddAsync(this);
             await dbContext.SaveChangesAsync();
@@ -44,10 +52,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.Id = 0;
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.Droplets.AddAsync(record);
                 await dbContext.SaveChangesAsync();
@@ -62,14 +67,11 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             if (record == null)
                 throw new NullReferenceException($"Could not find record { this.GetType().Name } with ID: {Id}");
 
-            record = Mapper.Map<Droplet>(this);
+            Mapper.Map(this, record);
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.Id = 0;
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.Droplets.AddAsync(record);
                 await dbContext.SaveChangesAsync();

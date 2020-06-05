@@ -1,14 +1,21 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 {
     public class DropletTag : BaseEntity
     {
+        [ForeignKey("Id")]
         public int DropletId { get; set; }
+
+        [ForeignKey("Id")]
         public int TagId { get; set; }
+
+        public Droplet Droplet { get; set; }
+        public Tag Tag { get; set; }
 
         public override async Task Create(DigitalOceanDbContext dbContext)
         {
@@ -30,9 +37,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.DropletTag.AddAsync(record);
                 await dbContext.SaveChangesAsync();
@@ -47,13 +52,11 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             if (record == null)
                 throw new NullReferenceException($"Could not find record { this.GetType().Name } with ID: {Id}");
 
-            record = Mapper.Map<DropletTag>(this);
+            Mapper.Map(this, record);
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.DropletTag.AddAsync(record);
                 await dbContext.SaveChangesAsync();

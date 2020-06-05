@@ -9,7 +9,7 @@ using Microting.DigitalOceanBase.Infrastructure.Data;
 namespace Microting.DigitalOceanBase.Migrations
 {
     [DbContext(typeof(DigitalOceanDbContext))]
-    [Migration("20200603073932_init")]
+    [Migration("20200604093302_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,9 +46,6 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<string>("DoUid")
                         .HasColumnType("text");
 
-                    b.Property<string>("DropletSize")
-                        .HasColumnType("text");
-
                     b.Property<bool>("IpV6Enabled")
                         .HasColumnType("bit");
 
@@ -70,6 +67,9 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<string>("RequestedImageName")
                         .HasColumnType("text");
 
+                    b.Property<int>("Sizeid")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
@@ -87,6 +87,9 @@ namespace Microting.DigitalOceanBase.Migrations
                         .HasMaxLength(255);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Sizeid")
+                        .IsUnique();
 
                     b.ToTable("Droplets");
                 });
@@ -124,6 +127,10 @@ namespace Microting.DigitalOceanBase.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DropletId");
+
+                    b.HasIndex("TagId");
+
                     b.ToTable("DropletTag");
                 });
 
@@ -139,10 +146,40 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<int>("CreatedByUserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Distribution")
+                        .HasColumnType("text");
+
                     b.Property<int>("DoUid")
                         .HasColumnType("int");
 
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ImageCreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("MinDiskSize")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Public")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("SizeGigabytes")
+                        .HasColumnType("double");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -199,7 +236,7 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.ToTable("PluginConfigurationValues");
                 });
 
-            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Tag", b =>
+            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Region", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -211,8 +248,97 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<int>("CreatedByUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DoUId")
+                    b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<int?>("SizeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("UpdatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorkflowState")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SizeId");
+
+                    b.ToTable("Regions");
+                });
+
+            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Size", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Available")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Disk")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Memory")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PriceHourly")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<decimal>("PriceMonthly")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Transfer")
+                        .HasColumnType("double");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("UpdatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Vcpus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorkflowState")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sizes");
+                });
+
+            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -233,6 +359,37 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Droplet", b =>
+                {
+                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Size", "Size")
+                        .WithOne("Droplet")
+                        .HasForeignKey("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Droplet", "Sizeid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.DropletTag", b =>
+                {
+                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Droplet", "Droplet")
+                        .WithMany("DropletTags")
+                        .HasForeignKey("DropletId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Region", b =>
+                {
+                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Size", null)
+                        .WithMany("Regions")
+                        .HasForeignKey("SizeId");
                 });
 #pragma warning restore 612, 618
         }

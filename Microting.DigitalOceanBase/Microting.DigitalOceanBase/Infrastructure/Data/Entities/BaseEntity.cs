@@ -34,12 +34,20 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
         public abstract Task Delete(DigitalOceanDbContext dbContext);
 
-        internal void SetInitialCreateData()
+        protected void SetInitialCreateData()
         {
             CreatedAt = DateTime.Now;
             UpdatedAt = DateTime.Now;
             Version = 1;
             WorkflowState = Constants.WorkflowStates.Created;
+        }
+
+        protected void SetUpdateDetails()
+        {
+            Id = 0;
+            UpdatedAt = DateTime.UtcNow;
+            UpdatedByUserId = UpdatedByUserId;
+            Version += 1;
         }
     }
 }

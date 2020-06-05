@@ -8,6 +8,14 @@ namespace Microting.DigitalOceanBase.Configuration
     internal static class AutomaperConfiguration
     {
         public static MapperConfiguration MapperConfiguration = new MapperConfiguration(cfg => {
+            cfg.AddGlobalIgnore("Id");
+            cfg.AddGlobalIgnore("CreatedAt");
+            cfg.AddGlobalIgnore("UpdatedAt");
+            cfg.AddGlobalIgnore("CreatedByUserId");
+            cfg.AddGlobalIgnore("UpdatedByUserId");
+            cfg.AddGlobalIgnore("WorkflowState");
+            cfg.AddGlobalIgnore("Version");
+
             cfg.CreateMap<Tag, Tag>();
             cfg.CreateMap<DropletTag, DropletTag>();
             cfg.CreateMap<Droplet, Droplet>();
@@ -22,8 +30,15 @@ namespace Microting.DigitalOceanBase.Configuration
                 .ForMember(t => t.PublicIpV6, opts => opts.MapFrom(m => m.Networks.V6.FirstOrDefault(g => g.Type == "public") == null ? null : m.Networks.V6.FirstOrDefault(g => g.Type == "public").IpAddress))
                 .ForMember(t => t.PrivateIpV4, opts => opts.MapFrom(m => m.Networks.V4.FirstOrDefault(g => g.Type != "public") == null ? null : m.Networks.V4.FirstOrDefault(g => g.Type != "public").IpAddress))
                 .ForMember(t => t.PublicIpV4, opts => opts.MapFrom(m => m.Networks.V4.FirstOrDefault(g => g.Type == "public") == null ? null : m.Networks.V4.FirstOrDefault(g => g.Type == "public").IpAddress));
+
+            cfg.CreateMap<DigitalOcean.API.Models.Responses.Image, Image>()
+               .ForMember(t => t.Id, opts => opts.Ignore())
+               .ForMember(t => t.DoUid, opts => opts.MapFrom(m => m.Id))
+               .ForMember(t => t.ImageCreatedAt, opts => opts.MapFrom(m => m.CreatedAt));
             cfg.CreateMap<DigitalOcean.API.Models.Responses.Size, Size>();
             cfg.CreateMap<string, Region>()
+                .ForMember(t => t.Name, opts => opts.MapFrom(m => m));
+            cfg.CreateMap<string, Tag>()
                 .ForMember(t => t.Name, opts => opts.MapFrom(m => m));
             cfg.CreateMap<Image, Image>();
             cfg.CreateMap<CreateDropletRequest, DigitalOcean.API.Models.Requests.Droplet>();

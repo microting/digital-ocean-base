@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
@@ -16,7 +15,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public int Memory { get; set; }
         public int Vcpus { get; set; }
         public int Disk { get; set; }
-        public List<string> Regions { get; set; }
+        public List<Region> Regions { get; set; }
         public bool Available { get; set; }
 
         public override async Task Create(DigitalOceanDbContext dbContext)
@@ -39,10 +38,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.Id = 0;
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.Sizes.AddAsync(record);
                 await dbContext.SaveChangesAsync();
@@ -57,14 +53,11 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             if (record == null)
                 throw new NullReferenceException($"Could not find record { this.GetType().Name } with ID: {Id}");
 
-            record = Mapper.Map<Size>(this);
+            Mapper.Map(this, record);
 
             if (dbContext.ChangeTracker.HasChanges())
             {
-                record.Id = 0;
-                record.UpdatedAt = DateTime.UtcNow;
-                record.UpdatedByUserId = UpdatedByUserId;
-                record.Version += 1;
+                SetUpdateDetails();
 
                 await dbContext.Sizes.AddAsync(record);
                 await dbContext.SaveChangesAsync();
