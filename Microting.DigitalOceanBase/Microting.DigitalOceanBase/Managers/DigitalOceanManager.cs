@@ -61,7 +61,7 @@ namespace Microting.DigitalOceanBase.Managers
 
             foreach (var item in apiImages)
             {
-                var dbImage = storedImages.FirstOrDefault(t => t.DoUid == item.DoUid);
+                var dbImage = storedImages.LastOrDefault(t => t.DoUid == item.DoUid);
                 if (dbImage == null)
                 {
                     item.CreatedByUserId = userId;
@@ -77,7 +77,7 @@ namespace Microting.DigitalOceanBase.Managers
 
             foreach (var item in storedImages)
             {
-                var image = apiImages.FirstOrDefault(t => t.DoUid == item.DoUid);
+                var image = apiImages.LastOrDefault(t => t.DoUid == item.DoUid);
                 if (image == null)
                 {
                     item.UpdatedByUserId = userId;
