@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microting.DigitalOceanBase.Infrastructure.Api.Clients.Requests;
+using Microting.DigitalOceanBase.Infrastructure.Constants;
 
 namespace Microting.DigitalOceanBase.Managers
 {
@@ -36,11 +38,11 @@ namespace Microting.DigitalOceanBase.Managers
             _apiClient.Init(cred.Value);
         }   
 
-        public async Task FetchDroplets(int userId)
+        public async Task FetchDropletsAsync(int userId)
         {
             try
             {
-                // await SyncDropletsInfo(userId);
+                //await SyncDropletsInfo(userId);
                 await SyncImageInfo(userId);
             }
             catch (Exception)
@@ -51,17 +53,67 @@ namespace Microting.DigitalOceanBase.Managers
            
         }
 
+        public async Task<Droplet> CreateDropletAsync(int userId, CreateDropletRequest request)
+        {
+            try
+            {
+                // check key name, or all keys
+                var result = await _apiClient.CreateDroplet(request);
+
+                var apiDroplet = _mapper.Map<Droplet>(result);
+                var apiSize = _mapper.Map<Size>(result.Size);
+                var apiTags = _mapper.Map<List<Tag>>(result.Tags);
+                return await CreateDropletRecord(userId, apiDroplet, apiSize, apiTags);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
+        public async Task<Droplet> RebuildDropletAsync(int userId, int dropletId, int imageId)
+        {
+            try
+            {
+                var droplet = await _dbContext.Droplets.FirstOrDefaultAsync(t => t.DoUid == dropletId);
+                if (droplet == null)
+                    throw new NullReferenceException("Droplet is not found");
+
+                var image = await _dbContext.Images.FirstOrDefaultAsync(t => t.DoUid == imageId);
+                if (image == null)
+                    throw new NullReferenceException("Image is not found");
+
+                // requested image
+
+                var result = await _apiClient.RebuildDroplet(dropletId, imageId);
+                if (result.Status != "success")
+                    throw new InvalidOperationException("Failed to rebuild droplet");
+
+                // created image
+
+                return null;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         private async Task SyncImageInfo(int userId)
         {
             var images = await _apiClient.GetImagesList();
             var apiImages = _mapper.Map<List<Image>>(images);
 
             var storedImages = await _dbContext.Images
-            .ToListAsync();
+            .ToListAsync();// check correct data loading
 
             foreach (var item in apiImages)
             {
-                var dbImage = storedImages.LastOrDefault(t => t.DoUid == item.DoUid);
+                // add if was removed
+                var dbImage = storedImages.LastOrDefault(t => t.DoUid == item.DoUid && t.WorkflowState != WorkflowStates.Removed);
                 if (dbImage == null)
                 {
                     item.CreatedByUserId = userId;
@@ -72,7 +124,7 @@ namespace Microting.DigitalOceanBase.Managers
                 // check update
                 item.Id = dbImage.Id;
                 item.UpdatedByUserId = userId;
-                await item.Update(_dbContext);
+                await item.Update<Image>(_dbContext);
             }
 
             foreach (var item in storedImages)
@@ -81,7 +133,7 @@ namespace Microting.DigitalOceanBase.Managers
                 if (image == null)
                 {
                     item.UpdatedByUserId = userId;
-                    await item.Delete(_dbContext);
+                    await item.Delete<Image>(_dbContext);
                 }
                     
             }
@@ -105,24 +157,24 @@ namespace Microting.DigitalOceanBase.Managers
                 // add new droplet
                 if (dbDroplet == null)
                 {
-                    await CreateDropletRecord(_dbContext, userId, apiDroplet, apiSize, apiTags);
+                    await CreateDropletRecord(userId, apiDroplet, apiSize, apiTags);
                     continue;
                 }
 
                 //update existing
-                //apiDroplet.Id = dbDroplet.Id;
-                //apiDroplet.UpdatedByUserId = userId;
-                //await apiDroplet.Update(_dbContext);
+                apiDroplet.Id = dbDroplet.Id;
+                apiDroplet.UpdatedByUserId = userId;
+                await apiDroplet.Update<Droplet>(_dbContext);
 
-                //apiSize.Id = dbDroplet.Size.Id;
-                //apiSize.UpdatedByUserId = userId;
-                //await apiDroplet.Update(_dbContext);
+                apiSize.Id = dbDroplet.Size.Id;
+                apiSize.UpdatedByUserId = userId;
+                await apiSize.Update<Size>(_dbContext);
             }
 
             // remove missing droplets
-            //var apiDroplets = _mapper.Map<List<Droplet>>(droplets);
-            //foreach (var item in storedDroplets)
-            //    await RemoveDropletRecord(userId, apiDroplets, item);
+            var apiDroplets = _mapper.Map<List<Droplet>>(droplets);
+            foreach (var item in storedDroplets)
+                await RemoveDropletRecord(userId, apiDroplets, item);
         }
 
         private async Task RemoveDropletRecord(int userId, List<Droplet> apiDroplets, Droplet item)
@@ -135,34 +187,30 @@ namespace Microting.DigitalOceanBase.Managers
                     foreach (var dt in item.DropletTags)
                     {
                         dt.UpdatedByUserId = userId;
-                        await dt.Delete(_dbContext);
+                        await dt.Delete<DropletTag>(_dbContext);
                     }
 
                     foreach (var reg in item.Size.Regions)
                     {
                         reg.UpdatedByUserId = userId;
-                        await reg.Delete(_dbContext);
+                        await reg.Delete<Region>(_dbContext);
                     }
 
                     item.Size.UpdatedByUserId = userId;
-                    await item.Size.Delete(_dbContext);
+                    await item.Size.Delete<Size>(_dbContext);
 
                     item.UpdatedByUserId = userId;
-                    await item.Delete(_dbContext);
+                    await item.Delete<Droplet>(_dbContext);
                 }
                 await tran.CommitAsync();
             }
         }
 
-        private async Task CreateDropletRecord(DigitalOceanDbContext dbContext, int userId, Droplet apiDroplet, Size apiSize, List<Tag> apiTags)
+        private async Task<Droplet> CreateDropletRecord(int userId, Droplet apiDroplet, Size apiSize, List<Tag> apiTags)
         {
             using (var tran = _dbContext.Database.BeginTransaction())
             {
-                foreach (var tag in apiTags)
-                {
-                    tag.CreatedByUserId = userId;
-                    await tag.Create(_dbContext);
-                }
+                await AddTags(userId, apiTags);
 
                 foreach (var reg in apiSize.Regions)
                 {
@@ -185,7 +233,25 @@ namespace Microting.DigitalOceanBase.Managers
                     apiDroplet.DropletTags.Add(dt);
                     await dt.Create(_dbContext);
                 }
-              await tran.CommitAsync();
+
+                await tran.CommitAsync();
+
+                return apiDroplet;
+            }
+        }
+
+        private async Task AddTags(int userId, List<Tag> apiTags)
+        {
+            for (int i = 0; i < apiTags.Count; i++)
+            {
+                var dbTag = _dbContext.Tags.FirstOrDefault(t => t.Name == apiTags[i].Name && t.WorkflowState != WorkflowStates.Removed);
+                if (dbTag == null)
+                {
+                    apiTags[i].CreatedByUserId = userId;
+                    await apiTags[i].Create(_dbContext);
+                }
+                else
+                    apiTags[i] = dbTag;
             }
         }
     }
