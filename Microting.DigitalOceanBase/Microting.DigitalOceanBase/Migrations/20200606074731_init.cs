@@ -115,7 +115,7 @@ namespace Microting.DigitalOceanBase.Migrations
                     CreatedByUserId = table.Column<int>(nullable: false),
                     UpdatedByUserId = table.Column<int>(nullable: false),
                     Version = table.Column<int>(nullable: false),
-                    DoUid = table.Column<string>(nullable: true),
+                    DoUid = table.Column<int>(nullable: false),
                     CustomerNo = table.Column<int>(nullable: false),
                     PublicIpV4 = table.Column<string>(nullable: true),
                     PrivateIpV4 = table.Column<string>(nullable: true),

@@ -38,19 +38,29 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
             return images.ToList();
         }
 
+        public async Task<Droplet> GetDroplet(int dropletId)
+        {
+            return await _doClient.Droplets.Get(dropletId);
+        }
+
 
         public async Task<Action> RebuildDroplet(long dropletId, long imageId)
         {
-            // - be able to rebuild droplets with a named image.
             var result = await _doClient.DropletActions.Rebuild(dropletId, imageId);
-
             return result;
         }
 
         public async Task<Droplet> CreateDroplet(CreateDropletRequest request)
         {
-            // be able to trigger creation of a new droplet, with user data and which image to use, data center to use etc.
             var doRequest = _mapper.Map<CreateDropletRequest, DigitalOcean.API.Models.Requests.Droplet>(request);
+
+            if (request.SshKeys == null)
+            {
+                var keys = await _doClient.Keys.GetAll();
+                if (keys != null)
+                    doRequest.SshKeys = keys.Select(t => (object)t.Id).ToList();
+            }
+
             var result = await _doClient.Droplets.Create(doRequest);
 
             return result;

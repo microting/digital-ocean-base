@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microting.DigitalOceanBase.Configuration;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
@@ -28,26 +30,65 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public int Version { get; set; }
 
 
-        public abstract Task Create(DigitalOceanDbContext dbContext);
-
-        public abstract Task Update(DigitalOceanDbContext dbContext);
-
-        public abstract Task Delete(DigitalOceanDbContext dbContext);
-
-        protected void SetInitialCreateData()
+        public async Task Create(DigitalOceanDbContext dbContext)
         {
             CreatedAt = DateTime.Now;
             UpdatedAt = DateTime.Now;
             Version = 1;
             WorkflowState = Constants.WorkflowStates.Created;
+
+            await dbContext.AddAsync(this);
+            await dbContext.SaveChangesAsync();
         }
 
-        protected void SetUpdateDetails()
+        public async Task Update<T>(DigitalOceanDbContext dbContext) where T : BaseEntity
         {
-            Id = 0;
-            UpdatedAt = DateTime.UtcNow;
-            UpdatedByUserId = UpdatedByUserId;
-            Version += 1;
+            await UpdateInternal<T>(dbContext);
+        }
+
+        public async Task Delete<T>(DigitalOceanDbContext dbContext) where T : BaseEntity
+        {
+            await UpdateInternal<T>(dbContext, Constants.WorkflowStates.Removed);
+        }
+
+        private async Task UpdateInternal<T>(DigitalOceanDbContext dbContext, string state = null) where T : BaseEntity
+        {
+            var record = await dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (record == null)
+                throw new NullReferenceException($"Could not find {this.GetType().Name} with ID: {Id}");
+
+            Mapper.Map(this, record);
+
+            if (state != null)
+                record.WorkflowState = state;
+
+            if (dbContext.ChangeTracker.HasChanges())
+            {
+                RevertOriginalRecordChanges(dbContext);
+
+                Id = 0;
+                UpdatedAt = DateTime.UtcNow;
+                UpdatedByUserId = UpdatedByUserId;
+                Version = record.Version + 1;
+                CreatedAt = record.CreatedAt;
+                CreatedByUserId = record.CreatedByUserId;
+
+                if (state != null)
+                    WorkflowState = state;
+
+                await dbContext.AddAsync(this);
+                await dbContext.SaveChangesAsync();
+            }
+
+        }
+
+        private void RevertOriginalRecordChanges(DigitalOceanDbContext dbContext)
+        {
+            var dbCompareChanges = dbContext.ChangeTracker.Entries()
+                                .Where(e => e.State == EntityState.Modified);
+            foreach (var entry in dbCompareChanges)
+                entry.State = EntityState.Detached;
         }
     }
 }

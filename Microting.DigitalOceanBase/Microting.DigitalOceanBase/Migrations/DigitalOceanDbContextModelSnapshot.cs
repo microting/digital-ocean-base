@@ -41,8 +41,8 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<int>("CustomerNo")
                         .HasColumnType("int");
 
-                    b.Property<string>("DoUid")
-                        .HasColumnType("text");
+                    b.Property<int>("DoUid")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IpV6Enabled")
                         .HasColumnType("bit");

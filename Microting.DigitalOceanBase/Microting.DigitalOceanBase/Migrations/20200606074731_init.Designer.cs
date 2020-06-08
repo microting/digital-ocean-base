@@ -9,7 +9,7 @@ using Microting.DigitalOceanBase.Infrastructure.Data;
 namespace Microting.DigitalOceanBase.Migrations
 {
     [DbContext(typeof(DigitalOceanDbContext))]
-    [Migration("20200604093302_init")]
+    [Migration("20200606074731_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,8 +43,8 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<int>("CustomerNo")
                         .HasColumnType("int");
 
-                    b.Property<string>("DoUid")
-                        .HasColumnType("text");
+                    b.Property<int>("DoUid")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IpV6Enabled")
                         .HasColumnType("bit");

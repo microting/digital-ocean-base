@@ -8,6 +8,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
     public interface IApiClient
     {
         Task<Droplet> CreateDroplet(CreateDropletRequest request);
+        Task<Droplet> GetDroplet(int dropletId);
         Task<List<Droplet>> GetDropletsList();
         Task<List<Image>> GetImagesList();
         void Init(string token);
