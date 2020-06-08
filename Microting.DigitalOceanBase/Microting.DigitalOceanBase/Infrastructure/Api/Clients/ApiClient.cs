@@ -38,6 +38,11 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
             return images.ToList();
         }
 
+        public async Task<Droplet> GetDroplet(int dropletId)
+        {
+            return await _doClient.Droplets.Get(dropletId);
+        }
+
 
         public async Task<Action> RebuildDroplet(long dropletId, long imageId)
         {
@@ -49,9 +54,12 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
         {
             var doRequest = _mapper.Map<CreateDropletRequest, DigitalOcean.API.Models.Requests.Droplet>(request);
 
-            var keys = await _doClient.Keys.GetAll();
-            if (keys != null)
-                doRequest.SshKeys = keys.ToList<object>();
+            if (request.SshKeys == null)
+            {
+                var keys = await _doClient.Keys.GetAll();
+                if (keys != null)
+                    doRequest.SshKeys = keys.Select(t => (object)t.Id).ToList();
+            }
 
             var result = await _doClient.Droplets.Create(doRequest);
 

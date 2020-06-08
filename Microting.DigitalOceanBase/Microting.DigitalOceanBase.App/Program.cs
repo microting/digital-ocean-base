@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microting.DigitalOceanBase.Infrastructure.Api.Clients.Requests;
 using Microting.DigitalOceanBase.Managers;
 using System;
 using System.IO;
@@ -24,6 +25,13 @@ namespace Microting.DigitalOceanBase.App
             var manager = serviceProvider.GetService<IDigitalOceanManager>();
 
             Task.WaitAll( manager.FetchDropletsAsync(11));
+            //Task.WaitAll(manager.RebuildDropletAsync(11, 1, 1));
+            //Task.WaitAll(manager.CreateDropletAsync(11, new CreateDropletRequest() {
+            //    Name = "MyTestImage",
+            //    Region = "nyc3",
+            //    Size = "s-1vcpu-1gb",
+            //    Image = "ubuntu-16-04-x64"
+            //}));
             //Console.WriteLine("Done");
             //Console.ReadLine();
         }
