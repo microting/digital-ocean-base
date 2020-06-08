@@ -23,15 +23,23 @@ namespace Microting.DigitalOceanBase.App
                .BuildServiceProvider();
 
             var manager = serviceProvider.GetService<IDigitalOceanManager>();
+            try
+            {
+                Task.WaitAll(manager.FetchDropletsAsync(11));
+                //Task.WaitAll(manager.RebuildDropletAsync(11, 1, 1));
+                //Task.WaitAll(manager.CreateDropletAsync(11, new CreateDropletRequest() {
+                //    Name = "MyTestImage",
+                //    Region = "nyc3",
+                //    Size = "s-1vcpu-1gb",
+                //    Image = "ubuntu-16-04-x64"
+                //}));
+            }
+            catch (Exception ex)
+            {
 
-            Task.WaitAll( manager.FetchDropletsAsync(11));
-            //Task.WaitAll(manager.RebuildDropletAsync(11, 1, 1));
-            //Task.WaitAll(manager.CreateDropletAsync(11, new CreateDropletRequest() {
-            //    Name = "MyTestImage",
-            //    Region = "nyc3",
-            //    Size = "s-1vcpu-1gb",
-            //    Image = "ubuntu-16-04-x64"
-            //}));
+                throw;
+            }
+           
             //Console.WriteLine("Done");
             //Console.ReadLine();
         }

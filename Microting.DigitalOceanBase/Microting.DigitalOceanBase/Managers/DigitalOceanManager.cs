@@ -34,82 +34,54 @@ namespace Microting.DigitalOceanBase.Managers
 
         public async Task<Droplet> CreateDropletAsync(int userId, CreateDropletRequest request)
         {
-            try
-            {
-                // check key name, or all keys
-                var result = await _apiClient.CreateDroplet(request);
+            // check key name, or all keys
+            var result = await _apiClient.CreateDroplet(request);
 
-                var apiDroplet = _mapper.Map<Droplet>(result);
-                var apiSize = _mapper.Map<Size>(result.Size);
-                var apiTags = _mapper.Map<List<Tag>>(result.Tags);
-                return await CreateDropletRecord(userId, apiDroplet, apiSize, apiTags);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
+            var apiDroplet = _mapper.Map<Droplet>(result);
+            var apiSize = _mapper.Map<Size>(result.Size);
+            var apiTags = _mapper.Map<List<Tag>>(result.Tags);
+            return await CreateDropletRecord(userId, apiDroplet, apiSize, apiTags);
         }
 
         public async Task<Droplet> RebuildDropletAsync(int userId, int dropletId, int imageId)
         {
-            try
-            {
-                var droplet = await _dbContext.Droplets.FirstOrDefaultAsync(t => t.DoUid == dropletId);
-                if (droplet == null)
-                    throw new NullReferenceException("Droplet is not found");
+            var droplet = await _dbContext.Droplets.FirstOrDefaultAsync(t => t.DoUid == dropletId);
+            if (droplet == null)
+                throw new NullReferenceException("Droplet is not found");
 
-                var image = await _dbContext.Images.FirstOrDefaultAsync(t => t.DoUid == imageId);
-                if (image == null)
-                    throw new NullReferenceException("Image is not found");
+            var image = await _dbContext.Images.FirstOrDefaultAsync(t => t.DoUid == imageId);
+            if (image == null)
+                throw new NullReferenceException("Image is not found");
 
-                var tags = await _dbContext.Tags
-                    .Where(t => droplet.DropletTags.Select(m => m.TagId).Contains(t.Id))
-                    .ToListAsync();
+            var tags = await _dbContext.Tags
+                .Where(t => droplet.DropletTags.Select(m => m.TagId).Contains(t.Id))
+                .ToListAsync();
                 
-                // requested image
-                droplet.RequestedImageId = imageId;
-                droplet.RequestedImageName = image.Name;
-                await UpdateDroplet(userId, droplet, droplet.Size, tags);
+            // requested image
+            droplet.RequestedImageId = imageId;
+            droplet.RequestedImageName = image.Name;
+            await UpdateDroplet(userId, droplet, droplet.Size, tags);
 
 
-                var result = await _apiClient.RebuildDroplet(dropletId, imageId);
-                if (result.Status != "success")
-                    throw new InvalidOperationException("Failed to rebuild droplet");
+            var result = await _apiClient.RebuildDroplet(dropletId, imageId);
+            if (result.Status != "success")
+                throw new InvalidOperationException("Failed to rebuild droplet");
 
-                // created image
-                var response = await _apiClient.GetDroplet(dropletId);
-                var apiDroplet = _mapper.Map<Droplet>(response);
-                var apiSize = _mapper.Map<Size>(response.Size);
-                var apiTags = _mapper.Map<List<Tag>>(response.Tags);
+            // created image
+            var response = await _apiClient.GetDroplet(dropletId);
+            var apiDroplet = _mapper.Map<Droplet>(response);
+            var apiSize = _mapper.Map<Size>(response.Size);
+            var apiTags = _mapper.Map<List<Tag>>(response.Tags);
 
-                await UpdateTags(userId, apiTags);
-                await UpdateRegions(userId, apiSize.Regions);
-                await UpdateDroplet(userId, apiDroplet, apiSize, apiTags);
-
-                return null;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            await UpdateTags(userId, apiTags);
+            await UpdateRegions(userId, apiSize.Regions);
+            return await UpdateDroplet(userId, apiDroplet, apiSize, apiTags);
         }
 
         public async Task FetchDropletsAsync(int userId)
         {
-            try
-            {
-                await SyncDropletsInfo(userId);
-                await SyncImageInfo(userId);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-           
+           // await SyncDropletsInfo(userId);
+            await SyncImageInfo(userId);
         }
 
 
@@ -146,8 +118,7 @@ namespace Microting.DigitalOceanBase.Managers
                     item.UpdatedByUserId = userId;
                     await item.Delete<Image>(_dbContext);
                 }
-                    
-            }
+            }1
         }
 
         private async Task SyncDropletsInfo(int userId)

@@ -33,7 +33,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
 
         public async Task<List<Image>> GetImagesList()
         {
-            var images = await _doClient.Images.GetAll(DigitalOcean.API.Models.Requests.ImageType.Private);
+            var images = await _doClient.Images.GetAll(DigitalOcean.API.Models.Requests.ImageType.All);
 
             return images.ToList();
         }
