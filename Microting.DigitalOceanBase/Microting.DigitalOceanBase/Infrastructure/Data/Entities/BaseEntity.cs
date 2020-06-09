@@ -53,7 +53,9 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
         private async Task UpdateInternal<T>(DigitalOceanDbContext dbContext, string state = null) where T : BaseEntity
         {
-            var record = await dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == Id);
+            var ctx = new DigitalOceanDbContextFactory().CreateDbContext(null);
+           
+            var record = await ctx.Set<T>().FirstOrDefaultAsync(x => x.Id == Id);
 
             if (record == null)
                 throw new NullReferenceException($"Could not find {this.GetType().Name} with ID: {Id}");
@@ -63,9 +65,10 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             if (state != null)
                 record.WorkflowState = state;
 
-            if (dbContext.ChangeTracker.HasChanges())
+            if (ctx.ChangeTracker.HasChanges())
             {
-                RevertOriginalRecordChanges(dbContext);
+                // revert record changes
+                //RevertOriginalRecordChanges(dbContext);
 
                 Id = 0;
                 UpdatedAt = DateTime.UtcNow;
@@ -88,7 +91,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             var dbCompareChanges = dbContext.ChangeTracker.Entries()
                                 .Where(e => e.State == EntityState.Modified);
             foreach (var entry in dbCompareChanges)
-                entry.State = EntityState.Detached;
+                entry.State = EntityState.Unchanged;
         }
     }
 }

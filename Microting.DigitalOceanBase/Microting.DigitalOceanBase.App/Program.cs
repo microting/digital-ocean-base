@@ -25,13 +25,23 @@ namespace Microting.DigitalOceanBase.App
             var manager = serviceProvider.GetService<IDigitalOceanManager>();
             try
             {
+                // images sync ok
+                // droplet sync - to do
+                // create droplet - ok,  // check flags, ssh keys, change sizes and regions
+                // rebuild droplet  - to do
+
                 Task.WaitAll(manager.FetchDropletsAsync(11));
                 //Task.WaitAll(manager.RebuildDropletAsync(11, 1, 1));
-                //Task.WaitAll(manager.CreateDropletAsync(11, new CreateDropletRequest() {
+                //Task.WaitAll(manager.CreateDropletAsync(11, new CreateDropletRequest()
+                //{
                 //    Name = "MyTestImage",
                 //    Region = "nyc3",
                 //    Size = "s-1vcpu-1gb",
-                //    Image = "ubuntu-16-04-x64"
+                //    Image = "ubuntu-16-04-x64",
+                //    Tags =  new System.Collections.Generic.List<string>() { "test", "Test2"},
+                //    Ipv6 = true,
+                //    PrivateNetworking = true, 
+                //    Monitoring = true,
                 //}));
             }
             catch (Exception ex)
