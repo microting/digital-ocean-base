@@ -66,5 +66,10 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
             return result;
         }
 
+        public async Task<Action> GetStatus(long actionId)
+        {
+            return await _doClient.Actions.Get(actionId);
+        }
+
     }
 }

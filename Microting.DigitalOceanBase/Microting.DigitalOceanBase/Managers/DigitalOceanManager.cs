@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microting.DigitalOceanBase.Infrastructure.Api.Clients.Requests;
 using Microting.DigitalOceanBase.Infrastructure.Constants;
+using System.Threading;
 
 namespace Microting.DigitalOceanBase.Managers
 {
@@ -51,7 +52,9 @@ namespace Microting.DigitalOceanBase.Managers
         public async Task<Droplet> RebuildDropletAsync(int userId, int dropletId, int imageId)
         {
             // proper droplet resolving
-            var droplet = await _dbContext.Droplets.FirstOrDefaultAsync(t => t.DoUid == dropletId);
+            var droplet = await _dbContext.Droplets
+                .Include(t => t.Size.SizeRegions)
+                .FirstOrDefaultAsync(t => t.DoUid == dropletId);
             if (droplet == null)
                 throw new NullReferenceException("Droplet is not found");
 
@@ -81,8 +84,14 @@ namespace Microting.DigitalOceanBase.Managers
 
 
             var result = await _apiClient.RebuildDroplet(dropletId, imageId);
-            if (result.Status != "success")
-                throw new InvalidOperationException("Failed to rebuild droplet");
+            while (result.Status != "completed")
+            {
+                Thread.Sleep(5000);
+                result = await _apiClient.GetStatus(result.Id);
+
+                if (result.Status == "errored")
+                    throw new InvalidOperationException("Failed to rebuild droplet");
+            }
 
             // created image
             var dbDroplet = await _dbContext.Droplets.FirstOrDefaultAsync(t => t.DoUid == dropletId);
