@@ -30,8 +30,8 @@ namespace Microting.DigitalOceanBase.App
                 // create droplet - ok,  // check flags, ssh keys, change sizes and regions
                 // rebuild droplet  - to do
 
-                Task.WaitAll(manager.FetchDropletsAsync(11));
-                //Task.WaitAll(manager.RebuildDropletAsync(11, 1, 1));
+                //Task.WaitAll(manager.FetchDropletsAsync(11));
+                Task.WaitAll(manager.RebuildDropletAsync(11, 194408182, 64531677));
                 //Task.WaitAll(manager.CreateDropletAsync(11, new CreateDropletRequest()
                 //{
                 //    Name = "MyTestImage",
