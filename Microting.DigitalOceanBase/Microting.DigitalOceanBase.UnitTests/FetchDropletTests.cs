@@ -91,7 +91,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.IsTrue(createdTags.Select(t => t.Name).Except(resp.Tags).Count() == 0);
             foreach (var tag in createdTags)
             {
-                ChekcBaseCreateInfo(userId, tag);
+                CheckBaseCreateInfo(userId, tag);
                 Assert.IsNotNull(tag.Name);
             }
 
@@ -99,12 +99,12 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.IsTrue(createdRegions.Select(t => t.Name).Except(resp.Size.Regions).Count() == 0);
             foreach (var reg in createdRegions)
             {
-                ChekcBaseCreateInfo(userId, reg);
+                CheckBaseCreateInfo(userId, reg);
                 Assert.IsNotNull(reg.Name);
             }
 
             // size
-            ChekcBaseCreateInfo(userId, createdSize);
+            CheckBaseCreateInfo(userId, createdSize);
             Assert.AreEqual(createdSize.Memory, resp.Size.Memory);
             Assert.AreEqual(createdSize.PriceHourly, resp.Size.PriceHourly);
             Assert.AreEqual(createdSize.PriceMonthly, resp.Size.PriceMonthly);
@@ -114,7 +114,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdSize.Disk, resp.Size.Disk);
 
             // droplet
-            ChekcBaseCreateInfo(userId, createdDroplet);
+            CheckBaseCreateInfo(userId, createdDroplet);
             Assert.AreEqual(createdDroplet.DoUid, resp.Id);
             Assert.AreEqual(createdDroplet.CustomerNo, 0);
             Assert.AreEqual(createdDroplet.PublicIpV4, resp.Networks.V4[0].IpAddress);
@@ -134,7 +134,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdDropletTags.Count, createdTags.Count);
             foreach (var dt in createdDropletTags)
             {
-                ChekcBaseCreateInfo(userId, dt);
+                CheckBaseCreateInfo(userId, dt);
 
                 Assert.AreEqual(createdDroplet.Id, dt.DropletId);
                 Assert.IsTrue(createdTags.Select(t => t.Id).Contains(dt.Id));
@@ -144,7 +144,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdSizeRegions.Count, createdRegions.Count);
             foreach (var sr in createdSizeRegions)
             {
-                ChekcBaseCreateInfo(userId, sr);
+                CheckBaseCreateInfo(userId, sr);
 
                 Assert.AreEqual(createdSize.Id, sr.SizeId);
                 Assert.IsTrue(createdRegions.Select(t => t.Id).Contains(sr.Id));
@@ -292,7 +292,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.IsTrue(createdTags.Select(t => t.Name).Except(secondDropletResponse.Tags).Count() == 0);
             foreach (var tag in createdTags)
             {
-                ChekcBaseCreateInfo(userId, tag);
+                CheckBaseCreateInfo(userId, tag);
                 Assert.IsNotNull(tag.Name);
             }
 
@@ -300,12 +300,12 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.IsTrue(createdRegions.Select(t => t.Name).Except(secondDropletResponse.Size.Regions).Count() == 0);
             foreach (var reg in createdRegions)
             {
-                ChekcBaseCreateInfo(userId, reg);
+                CheckBaseCreateInfo(userId, reg);
                 Assert.IsNotNull(reg.Name);
             }
 
             // size
-            ChekcBaseUpdateInfo(userId, createdSize);
+            CheckBaseUpdateInfo(userId, createdSize);
             Assert.AreEqual(createdSize.Memory, secondDropletResponse.Size.Memory);
             Assert.AreEqual(createdSize.PriceHourly, secondDropletResponse.Size.PriceHourly);
             Assert.AreEqual(createdSize.PriceMonthly, secondDropletResponse.Size.PriceMonthly);
@@ -315,7 +315,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdSize.Disk, secondDropletResponse.Size.Disk);
 
             // droplet
-            ChekcBaseUpdateInfo(userId, createdDroplet);
+            CheckBaseUpdateInfo(userId, createdDroplet);
             Assert.AreEqual(createdDroplet.DoUid, secondDropletResponse.Id);
             Assert.AreEqual(createdDroplet.CustomerNo, 0);
             Assert.AreEqual(createdDroplet.PublicIpV4, secondDropletResponse.Networks.V4[0].IpAddress);
@@ -332,23 +332,25 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdDroplet.Sizeid, createdSize.Id);
 
             // dropletTag
+            Assert.Greater(createdDropletTags.Count, 0);
             Assert.AreEqual(createdDropletTags.Count, createdTags.Count);
             foreach (var dt in createdDropletTags)
             {
-                ChekcBaseUpdateInfo(userId, dt);
+                CheckBaseUpdateInfo(userId, dt);
 
                 Assert.AreEqual(createdDroplet.Id, dt.DropletId);
                 Assert.IsTrue(createdTags.Select(t => t.Id).Contains(dt.TagId));
             }
 
             // regionsize
+            Assert.Greater(createdSizeRegions.Count, 0);
             Assert.AreEqual(createdSizeRegions.Count, createdRegions.Count);
             foreach (var sr in createdSizeRegions)
             {
-                ChekcBaseUpdateInfo(userId, sr);
+                CheckBaseUpdateInfo(userId, sr);
 
                 Assert.AreEqual(createdSize.Id, sr.SizeId);
-                Assert.IsTrue(createdRegions.Select(t => t.Id).Contains(sr.SizeId));
+                Assert.IsTrue(createdRegions.Select(t => t.Id).Contains(sr.RegionId));
             }
         }
 
@@ -442,7 +444,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.IsTrue(createdTags.Select(t => t.Name).Except(firstDropletResponse.Tags).Count() == 0);
             foreach (var tag in createdTags)
             {
-                ChekcBaseCreateInfo(userId, tag);
+                CheckBaseCreateInfo(userId, tag);
                 Assert.IsNotNull(tag.Name);
             }
 
@@ -450,12 +452,12 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.IsTrue(createdRegions.Select(t => t.Name).Except(firstDropletResponse.Size.Regions).Count() == 0);
             foreach (var reg in createdRegions)
             {
-                ChekcBaseCreateInfo(userId, reg);
+                CheckBaseCreateInfo(userId, reg);
                 Assert.IsNotNull(reg.Name);
             }
 
             // size
-            ChekcBaseRemoveInfo(userId, createdSize);
+            CheckBaseRemoveInfo(userId, createdSize);
             Assert.AreEqual(createdSize.Memory, firstDropletResponse.Size.Memory);
             Assert.AreEqual(createdSize.PriceHourly, firstDropletResponse.Size.PriceHourly);
             Assert.AreEqual(createdSize.PriceMonthly, firstDropletResponse.Size.PriceMonthly);
@@ -465,7 +467,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdSize.Disk, firstDropletResponse.Size.Disk);
 
             // droplet
-            ChekcBaseRemoveInfo(userId, createdDroplet);
+            CheckBaseRemoveInfo(userId, createdDroplet);
             Assert.AreEqual(createdDroplet.DoUid, firstDropletResponse.Id);
             Assert.AreEqual(createdDroplet.CustomerNo, 0);
             Assert.AreEqual(createdDroplet.PublicIpV4, firstDropletResponse.Networks.V4[0].IpAddress);
@@ -485,7 +487,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdDropletTags.Count, createdTags.Count);
             foreach (var dt in createdDropletTags)
             {
-                ChekcBaseRemoveInfo(userId, dt);
+                CheckBaseRemoveInfo(userId, dt);
 
                 Assert.AreEqual(createdDroplet.Id, dt.DropletId);
                 Assert.IsTrue(createdTags.Select(t => t.Id).Contains(dt.TagId));
@@ -495,7 +497,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdSizeRegions.Count, createdRegions.Count);
             foreach (var sr in createdSizeRegions)
             {
-                ChekcBaseRemoveInfo(userId, sr);
+                CheckBaseRemoveInfo(userId, sr);
 
                 Assert.AreEqual(createdSize.Id, sr.SizeId);
                 Assert.IsTrue(createdRegions.Select(t => t.Id).Contains(sr.RegionId));
@@ -539,7 +541,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             // Assert
             var createdImage = await DbContext.Images.FirstOrDefaultAsync();
 
-            ChekcBaseCreateInfo(userId, createdImage);
+            CheckBaseCreateInfo(userId, createdImage);
             Assert.AreEqual(createdImage.DoUid, resp.Id);
             Assert.AreEqual(createdImage.Name, resp.Name);
             Assert.AreEqual(createdImage.Type, resp.Type);
@@ -614,7 +616,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             var updatedImageList = await DbContext.Images.ToListAsync();
             var updatedImage = updatedImageList.Last();
 
-            ChekcBaseUpdateInfo(userId, updatedImage);
+            CheckBaseUpdateInfo(userId, updatedImage);
             Assert.AreEqual(updatedImage.DoUid, resp.Id);
             Assert.AreEqual(updatedImage.Name, resp.Name);
             Assert.AreEqual(updatedImage.Type, resp.Type);
@@ -671,7 +673,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             var updatedImageList = await DbContext.Images.ToListAsync();
             var updatedImage = updatedImageList.Last();
 
-            ChekcBaseRemoveInfo(userId, updatedImage);
+            CheckBaseRemoveInfo(userId, updatedImage);
             Assert.AreEqual(updatedImage.DoUid, firstImage.DoUid);
             Assert.AreEqual(updatedImage.Name, firstImage.Name);
             Assert.AreEqual(updatedImage.Type, firstImage.Type);

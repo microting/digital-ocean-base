@@ -96,7 +96,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.IsTrue(createdTags.Select(t => t.Name).Except(apiResp.Result.Tags).Count() == 0 );
             foreach (var tag in createdTags)
             {
-                ChekcBaseCreateInfo(userId, tag);
+                CheckBaseCreateInfo(userId, tag);
                 Assert.IsNotNull(tag.Name);
             }
 
@@ -104,12 +104,12 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.IsTrue(createdRegions.Select(t => t.Name).Except(apiResp.Result.Size.Regions).Count() == 0);
             foreach (var reg in createdRegions)
             {
-                ChekcBaseCreateInfo(userId, reg);
+                CheckBaseCreateInfo(userId, reg);
                 Assert.IsNotNull(reg.Name);
             }
 
             // size
-            ChekcBaseCreateInfo(userId, createdSize);
+            CheckBaseCreateInfo(userId, createdSize);
             Assert.AreEqual(createdSize.Memory, apiResp.Result.Size.Memory);
             Assert.AreEqual(createdSize.PriceHourly, apiResp.Result.Size.PriceHourly);
             Assert.AreEqual(createdSize.PriceMonthly, apiResp.Result.Size.PriceMonthly);
@@ -119,7 +119,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdSize.Disk, apiResp.Result.Size.Disk);
 
             // droplet
-            ChekcBaseCreateInfo(userId, createdDroplet);
+            CheckBaseCreateInfo(userId, createdDroplet);
             Assert.AreEqual(createdDroplet.DoUid, apiResp.Result.Id);
             Assert.AreEqual(createdDroplet.CustomerNo, 0);
             Assert.AreEqual(createdDroplet.PublicIpV4, apiResp.Result.Networks.V4[0].IpAddress);
@@ -139,7 +139,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdDropletTags.Count, createdTags.Count);
             foreach (var dt in createdDropletTags)
             {
-                ChekcBaseCreateInfo(userId, dt);
+                CheckBaseCreateInfo(userId, dt);
 
                 Assert.AreEqual(createdDroplet.Id, dt.DropletId);
                 Assert.IsTrue(createdTags.Select(t => t.Id).Contains(dt.Id));
@@ -149,7 +149,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdSizeRegions.Count, createdRegions.Count);
             foreach (var sr in createdSizeRegions)
             {
-                ChekcBaseCreateInfo(userId, sr);
+                CheckBaseCreateInfo(userId, sr);
 
                 Assert.AreEqual(createdSize.Id, sr.SizeId);
                 Assert.IsTrue(createdRegions.Select(t => t.Id).Contains(sr.Id));

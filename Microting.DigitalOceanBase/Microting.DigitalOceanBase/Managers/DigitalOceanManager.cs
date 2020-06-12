@@ -74,13 +74,12 @@ namespace Microting.DigitalOceanBase.Managers
 
             var response = await _apiClient.GetDroplet(dropletId);
             var apiDroplet = _mapper.Map<Droplet>(response);
-            var apiSize = _mapper.Map<Size>(response.Size);
             var apiTags = _mapper.Map<List<Tag>>(response.Tags);
             var apiReg = _mapper.Map<List<Region>>(response.Size.Regions);
 
-            droplet.RequestedImageId = imageId;
-            droplet.RequestedImageName = image.Name;
-            await UpdateDroplet(userId, apiDroplet, apiTags, apiReg, droplet);
+            apiDroplet.RequestedImageId = imageId;
+            apiDroplet.RequestedImageName = image.Name;
+            await UpdateDroplet(userId, apiDroplet, droplet);
 
 
             var result = await _apiClient.RebuildDroplet(dropletId, imageId);
@@ -94,18 +93,18 @@ namespace Microting.DigitalOceanBase.Managers
             }
 
             // created image
-            var dbDroplet = await _dbContext.Droplets.FirstOrDefaultAsync(t => t.DoUid == dropletId);
+            var dbDroplets = await _dbContext.Droplets.Where(t => t.DoUid == dropletId).ToListAsync();
+            var dbDroplet = dbDroplets.OrderBy(t => t.Id).LastOrDefault();
 
             var response2 = await _apiClient.GetDroplet(dropletId);
             var apiDroplet2 = _mapper.Map<Droplet>(response2);
-            var apiSize2 = _mapper.Map<Size>(response2.Size);
             var apiTags2 = _mapper.Map<List<Tag>>(response2.Tags);
             var apiReg2 = _mapper.Map<List<Region>>(response2.Size.Regions);
 
-            await UpdateTags(userId, apiTags);
-            await UpdateRegions(userId, apiReg);
+            await UpdateTags(userId, apiTags2);
+            await UpdateRegions(userId, apiReg2);
 
-            return await UpdateDroplet(userId, apiDroplet2, apiTags2, apiReg2, dbDroplet);
+            return await UpdateDroplet(userId, apiDroplet2, dbDroplet);
         }
 
         public async Task FetchDropletsAsync(int userId)
@@ -190,7 +189,7 @@ namespace Microting.DigitalOceanBase.Managers
                     continue;
                 }
 
-                await UpdateDroplet(userId, apiDroplet, apiTags, apiReg, dbDroplet);
+                await UpdateDroplet(userId, apiDroplet, dbDroplet);
             }
 
             // remove missing droplets
@@ -199,42 +198,34 @@ namespace Microting.DigitalOceanBase.Managers
                 await RemoveDropletRecord(userId, apiDroplets, item);
         }
 
-        private async Task<Droplet> UpdateDroplet(int userId, Droplet apiDroplet, List<Tag> apiTags, List<Region> apiReg, Droplet dbDroplet)
+        private async Task<Droplet> UpdateDroplet(int userId, Droplet apiDroplet, Droplet dbDroplet)
         {
-            apiDroplet.DropletTags = apiTags.Select(t => new DropletTag() { Droplet = apiDroplet, Tag = t }).ToList();
-            apiDroplet.Size.SizeRegions = apiReg.Select(t => new SizeRegion() { Size = apiDroplet.Size, Region = t }).ToList();
-
-            //using (var tran = _dbContext.Database.BeginTransaction())
+            using (var tran = _dbContext.Database.BeginTransaction())
             {
-                var dTags = apiTags.Select(t => new DropletTag() { Droplet = apiDroplet, Tag = t }).ToList();
-                var sizeReg = apiReg.Select(t => new SizeRegion() { SizeId = dbDroplet.Sizeid, Region = t }).ToList();
-
-                apiDroplet.Size.Id = dbDroplet.Size.Id;
+                apiDroplet.Size.Droplet = null;
                 apiDroplet.Size.SizeRegions = null;
+                apiDroplet.Size.Id = dbDroplet.Sizeid;
                 apiDroplet.Size.UpdatedByUserId = userId;
                 await apiDroplet.Size.Update<Size>(_dbContext);
 
+                apiDroplet.Id = dbDroplet.Id;
+                apiDroplet.DropletTags = null;
+                apiDroplet.UpdatedByUserId = userId;
+                await apiDroplet.Update<Droplet>(_dbContext);
+
+                var sizeReg = dbDroplet.Size.SizeRegions.Select(t => new SizeRegion() { Size = apiDroplet.Size, Region = t.Region }).ToList();
                 foreach (var sr in sizeReg)
                 {
-                    var ids = await _dbContext.SizeRegion.Where(g => g.Size.Id == sr.SizeId && g.Region.Name == sr.Region.Name).Select(t => t.Id).ToListAsync();
+                    var ids = await _dbContext.SizeRegion.Where(g => g.Size.Droplet.Id == dbDroplet.Id && g.Region.Name == sr.Region.Name).Select(t => t.Id).ToListAsync();
                     if (ids.Any())
                     {
                         sr.Id = Enumerable.Max(ids);
                         sr.UpdatedByUserId = userId;
                         await sr.Update<SizeRegion>(_dbContext);
                     }
-                    else
-                    {
-                        sr.CreatedByUserId = userId;
-                        await sr.Create(_dbContext);
-                    }
                 }
 
-                apiDroplet.Id = dbDroplet.Id;
-                apiDroplet.UpdatedByUserId = userId;
-                apiDroplet.DropletTags = null;
-                await apiDroplet.Update<Droplet>(_dbContext);
-
+                var dTags = dbDroplet.DropletTags.Select(t => new DropletTag() { Droplet = apiDroplet, Tag = t.Tag }).ToList();
                 foreach (var dt in dTags)
                 {
                     var ids = await _dbContext.DropletTag.Where(g => g.Droplet.DoUid == dt.Droplet.DoUid && g.Tag.Name == dt.Tag.Name).Select(t => t.Id).ToListAsync();
@@ -244,14 +235,9 @@ namespace Microting.DigitalOceanBase.Managers
                         dt.UpdatedByUserId = userId;
                         await dt.Update<DropletTag>(_dbContext);
                     }
-                    else
-                    {
-                        dt.CreatedByUserId = userId;
-                        await dt.Create(_dbContext);
-                    }
                 }
 
-                //await tran.CommitAsync();
+                await tran.CommitAsync();
 
                 return apiDroplet;
             }
@@ -259,28 +245,25 @@ namespace Microting.DigitalOceanBase.Managers
 
         private async Task RemoveDropletRecord(int userId, List<Droplet> apiDroplets, Droplet item)
         {
-           // using (var tran = _dbContext.Database.BeginTransaction())
+           using (var tran = _dbContext.Database.BeginTransaction())
             {
                 var droplet = apiDroplets.FirstOrDefault(t => t.DoUid == item.DoUid);
                 if (droplet == null)
                 {
+                    var removedDroplet = _mapper.Map<Droplet>(item);
 
-                    var sizeCopy = _mapper.Map<Size>(item.Size);
-                    var sizeReg = item.Size.SizeRegions.Select(t => new SizeRegion() { Size = sizeCopy, Region = t.Region }).ToList();
-                    var dTags = item.DropletTags.Select(t => new DropletTag() { Droplet = item, Tag = t.Tag }).ToList();
+                    removedDroplet.Size.Droplet = null;
+                    removedDroplet.Size.SizeRegions = null;
+                    removedDroplet.Size.Id = item.Sizeid;
+                    removedDroplet.Size.UpdatedByUserId = userId;
+                    await removedDroplet.Size.Delete<Size>(_dbContext);
 
-                    sizeCopy.Droplet = null;
-                    sizeCopy.SizeRegions = null;
-                    sizeCopy.Id = item.Sizeid;
-                    sizeCopy.UpdatedByUserId = userId;
-                    await sizeCopy.Delete<Size>(_dbContext);
+                    removedDroplet.Id = item.Id;
+                    removedDroplet.DropletTags = null;
+                    removedDroplet.UpdatedByUserId = userId;
+                    await removedDroplet.Delete<Droplet>(_dbContext);
 
-
-                    item.Size = null;
-                    item.DropletTags = null;
-                    item.UpdatedByUserId = userId;
-                    await item.Delete<Droplet>(_dbContext);
-
+                    var sizeReg = item.Size.SizeRegions.Select(t => new SizeRegion() { Size = removedDroplet.Size, Region = t.Region }).ToList();
                     foreach (var sr in sizeReg)
                     {
                         var ids = await _dbContext.SizeRegion.Where(g => g.Size.Slug == sr.Size.Slug && g.Region.Name == sr.Region.Name).Select(t => t.Id).ToListAsync();
@@ -292,20 +275,19 @@ namespace Microting.DigitalOceanBase.Managers
                         }
                     }
 
+                    var dTags = item.DropletTags.Select(t => new DropletTag() { Droplet = removedDroplet, Tag = t.Tag }).ToList();
                     foreach (var dt in dTags)
                     {
                         var ids = await _dbContext.DropletTag.Where(g => g.Droplet.DoUid == dt.Droplet.DoUid && g.Tag.Name == dt.Tag.Name).Select(t => t.Id).ToListAsync();
                         if (ids.Any())
                         {
-                            dt.DropletId = item.Id;
-                            dt.Droplet = null;
                             dt.Id = Enumerable.Max(ids);
                             dt.UpdatedByUserId = userId;
                             await dt.Delete<DropletTag>(_dbContext);
                         }
                     }
                 }
-                //await tran.CommitAsync();
+                await tran.CommitAsync();
             }
         }
 
