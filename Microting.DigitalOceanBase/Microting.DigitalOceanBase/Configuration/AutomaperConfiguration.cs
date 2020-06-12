@@ -9,7 +9,7 @@ namespace Microting.DigitalOceanBase.Configuration
     {
         public static MapperConfiguration MapperConfiguration = new MapperConfiguration(cfg => {
             //cfg.AddGlobalIgnore("Id");
-            //cfg.AddGlobalIgnore("CreatedAt");
+            cfg.AddGlobalIgnore("CreatedAt");
             //cfg.AddGlobalIgnore("UpdatedAt");
             cfg.AddGlobalIgnore("CreatedByUserId");
             //cfg.AddGlobalIgnore("UpdatedByUserId");
