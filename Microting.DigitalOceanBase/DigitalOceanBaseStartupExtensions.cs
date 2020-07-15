@@ -18,7 +18,7 @@ namespace Microting.DigitalOceanBase
             services.AddSingleton<IMapper>(new Mapper(AutomaperConfiguration.MapperConfiguration));
 
             services.AddDbContext<DigitalOceanDbContext>(options =>
-                        options.UseMySQL(connectionString));
+                        options.UseMySql(connectionString));
             return services;
         }
     }
