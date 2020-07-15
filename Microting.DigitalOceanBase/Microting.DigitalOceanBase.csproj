@@ -8,7 +8,6 @@
     <PackageId>Microting.DigitalOceanBase</PackageId>
     <Authors>René Schultz Madsen</Authors>
     <Company>Microting A/S</Company>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
