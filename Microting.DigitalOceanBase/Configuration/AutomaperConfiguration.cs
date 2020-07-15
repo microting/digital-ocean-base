@@ -5,20 +5,24 @@ using System.Linq;
 
 namespace Microting.DigitalOceanBase.Configuration
 {
-    internal static class AutomaperConfiguration
+    public static class AutomaperConfiguration
     {
         public static MapperConfiguration MapperConfiguration = new MapperConfiguration(cfg => {
-            cfg.AddGlobalIgnore("Id");
+            //cfg.AddGlobalIgnore("Id");
             cfg.AddGlobalIgnore("CreatedAt");
-            cfg.AddGlobalIgnore("UpdatedAt");
+            //cfg.AddGlobalIgnore("UpdatedAt");
             cfg.AddGlobalIgnore("CreatedByUserId");
-            cfg.AddGlobalIgnore("UpdatedByUserId");
-            cfg.AddGlobalIgnore("WorkflowState");
+            //cfg.AddGlobalIgnore("UpdatedByUserId");
+            //cfg.AddGlobalIgnore("WorkflowState");
             cfg.AddGlobalIgnore("Version");
 
-            cfg.CreateMap<Tag, Tag>();
+            //cfg.CreateMap<Tag, Tag>();
             cfg.CreateMap<DropletTag, DropletTag>();
-            cfg.CreateMap<Droplet, Droplet>();
+            cfg.CreateMap<Size, Size>();
+            cfg.CreateMap<SizeRegion, SizeRegion>();
+            cfg.CreateMap<Droplet, Droplet>()
+                .ForMember(t => t.DropletTags, opts => opts.MapFrom(m => m.DropletTags))
+                .ForMember(t => t.Size, opts => opts.MapFrom(m => m.Size));
             cfg.CreateMap<DigitalOcean.API.Models.Responses.Droplet, Droplet>()
                 .ForMember(t => t.Id, opts => opts.Ignore())
                 .ForMember(t => t.DoUid, opts => opts.MapFrom(m => m.Id))

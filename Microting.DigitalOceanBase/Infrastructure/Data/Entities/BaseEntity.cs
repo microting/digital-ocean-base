@@ -53,42 +53,33 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
         private async Task UpdateInternal<T>(DigitalOceanDbContext dbContext, string state = null) where T : BaseEntity
         {
-            var record = await dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == Id);
-
-            if (record == null)
-                throw new NullReferenceException($"Could not find {this.GetType().Name} with ID: {Id}");
-
-            Mapper.Map(this, record);
-
-            if (state != null)
-                record.WorkflowState = state;
-
-            if (dbContext.ChangeTracker.HasChanges())
+            using (var ctx = new DigitalOceanDbContextFactory().CreateDbContext(null))
             {
-                RevertOriginalRecordChanges(dbContext);
+                var record = await ctx.Set<T>().FirstOrDefaultAsync(x => x.Id == Id);
+                if (record == null)
+                    throw new NullReferenceException($"Could not find {this.GetType().Name} with ID: {Id}");
 
-                Id = 0;
-                UpdatedAt = DateTime.UtcNow;
-                UpdatedByUserId = UpdatedByUserId;
-                Version = record.Version + 1;
-                CreatedAt = record.CreatedAt;
-                CreatedByUserId = record.CreatedByUserId;
+                Mapper.Map(this, record);
 
                 if (state != null)
-                    WorkflowState = state;
+                    record.WorkflowState = state;
 
-                await dbContext.AddAsync(this);
-                await dbContext.SaveChangesAsync();
+                if (ctx.ChangeTracker.HasChanges())
+                {
+                    Id = 0;
+                    UpdatedAt = DateTime.UtcNow;
+                    UpdatedByUserId = UpdatedByUserId;
+                    Version = record.Version + 1;
+                    CreatedAt = record.CreatedAt;
+                    CreatedByUserId = record.CreatedByUserId;
+
+                    if (state != null)
+                        WorkflowState = state;
+
+                    await dbContext.AddAsync(this);
+                    await dbContext.SaveChangesAsync();
+                }
             }
-
-        }
-
-        private void RevertOriginalRecordChanges(DigitalOceanDbContext dbContext)
-        {
-            var dbCompareChanges = dbContext.ChangeTracker.Entries()
-                                .Where(e => e.State == EntityState.Modified);
-            foreach (var entry in dbCompareChanges)
-                entry.State = EntityState.Detached;
         }
     }
 }

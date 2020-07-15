@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microting.DigitalOceanBase.Infrastructure.Data;
 
 namespace Microting.DigitalOceanBase.Migrations
 {
     [DbContext(typeof(DigitalOceanDbContext))]
-    partial class DigitalOceanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200608090917_fixed_regions")]
+    partial class fixed_regions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,9 +251,6 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int?>("SizeId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
@@ -266,8 +265,6 @@ namespace Microting.DigitalOceanBase.Migrations
                         .HasMaxLength(255);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SizeId");
 
                     b.ToTable("Regions");
                 });
@@ -324,6 +321,46 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sizes");
+                });
+
+            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.SizeRegion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RegionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SizeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("UpdatedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WorkflowState")
+                        .HasColumnType("varchar(255)")
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegionId");
+
+                    b.HasIndex("SizeId");
+
+                    b.ToTable("SizeRegion");
                 });
 
             modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Tag", b =>
@@ -383,11 +420,19 @@ namespace Microting.DigitalOceanBase.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Region", b =>
+            modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.SizeRegion", b =>
                 {
-                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Size", null)
-                        .WithMany("Regions")
-                        .HasForeignKey("SizeId");
+                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Region", "Region")
+                        .WithMany()
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Size", "Size")
+                        .WithMany("SizeRegions")
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
