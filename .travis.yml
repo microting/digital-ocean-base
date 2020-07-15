@@ -11,7 +11,7 @@ script:
   - dotnet build Microting.DigitalOceanBase.sln
   - dotnet test -v n Microting.DigitalOceanBase.UnitTests/Microting.DigitalOceanBase.UnitTests.csproj
   - export GITVERSION=`git describe --abbrev=0 --tags | cut -d "v" -f 2`
-  - echo $GITVERSION
+  - echo $GITVERSION 
   - dotnet pack Microting.DigitalOceanBase.sln -c Release -o ./artifacts -p:PackageVersion=$GITVERSION
   - export FILENAME="/home/travis/build/microting/digital-ocean-base/artifacts/Microting.DigitalOceanBase.${GITVERSION}.nupkg"
   - echo $FILENAME
