@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microting.DigitalOceanBase.Infrastructure.Data.Entities;
+using Microting.eFormApi.BasePn.Abstractions;
+using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Data
 {
-    public class DigitalOceanDbContext : DbContext
+    public class DigitalOceanDbContext : DbContext, IPluginDbContext
     {
 
         public DigitalOceanDbContext(DbContextOptions<DigitalOceanDbContext> options) : base(options)
@@ -17,9 +19,12 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data
         public DbSet<DropletTag> DropletTag { get; set; }
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Region> Regions { get; set; }
-
         public DbSet<SizeRegion> SizeRegion { get; set; }
 
-        public DbSet<PluginConfigurationValues> PluginConfigurationValues { get; set; }
+        public DbSet<PluginConfigurationValue> PluginConfigurationValues { get; set; }
+        public DbSet<PluginConfigurationValueVersion> PluginConfigurationValueVersions { get; set; }
+        public DbSet<PluginPermission> PluginPermissions { get; set; }
+        public DbSet<PluginGroupPermission> PluginGroupPermissions { get; set; }
+        public DbSet<PluginGroupPermissionVersion> PluginGroupPermissionVersions { get; set; }
     }
 }
