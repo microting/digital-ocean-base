@@ -21,7 +21,7 @@ namespace Microting.DigitalOceanBase.UnitTests
         protected async Task SetUp()
         {
             Mapper = new Mapper(AutomaperConfiguration.MapperConfiguration);
-            DbContext = new DigitalOceanDbContextFactory().CreateDbContext(null);
+            DbContext = new DigitalOceanDbContextFactory().CreateDbContext(new string[] { });
             await DbContext.PluginConfigurationValues.AddAsync(
                 new PluginConfigurationValue() 
                 {
@@ -67,7 +67,7 @@ namespace Microting.DigitalOceanBase.UnitTests
         public async Task OneTimeSetUp()
         {
             await new DigitalOceanDbContextFactory()
-                .CreateDbContext(null)
+                .CreateDbContext(new string[] { })
                 .Database
                 .MigrateAsync();
         }
@@ -76,7 +76,7 @@ namespace Microting.DigitalOceanBase.UnitTests
         public async Task OneTimeTearDown()
         {
             await new DigitalOceanDbContextFactory()
-            .CreateDbContext(null)
+            .CreateDbContext(new string[] { })
             .Database.EnsureDeletedAsync();
         }
 
