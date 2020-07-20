@@ -19,7 +19,8 @@ namespace Microting.DigitalOceanBase.App
 
 
             var serviceProvider = new ServiceCollection()
-               .AddDigitalOceanBaseServices(configuration.GetConnectionString("DigitalOceanDb"))
+
+               .AddDigitalOceanBaseServices()
                .BuildServiceProvider();
 
             var manager = serviceProvider.GetService<IDigitalOceanManager>();
