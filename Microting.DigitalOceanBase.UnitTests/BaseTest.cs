@@ -4,6 +4,7 @@ using Microting.DigitalOceanBase.Configuration;
 using Microting.DigitalOceanBase.Infrastructure.Constants;
 using Microting.DigitalOceanBase.Infrastructure.Data;
 using Microting.DigitalOceanBase.Infrastructure.Data.Entities;
+using Microting.eFormApi.BasePn.Infrastructure.Database.Entities;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Mapper = new Mapper(AutomaperConfiguration.MapperConfiguration);
             DbContext = new DigitalOceanDbContextFactory().CreateDbContext(null);
             await DbContext.PluginConfigurationValues.AddAsync(
-                new PluginConfigurationValues() 
+                new PluginConfigurationValue() 
                 {
                     Name= "DigitalOceanBaseSettings:DigitalOceanToken"
                 });
