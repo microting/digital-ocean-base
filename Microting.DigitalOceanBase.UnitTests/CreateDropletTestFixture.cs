@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.UnitTests
 {
-    public class CreateDropletTest : BaseTest
+    public class CreateDropletTestFixture : DbTestFixture
     {
         [Test]
         public async Task Droplet_CretedSuccessfully() 

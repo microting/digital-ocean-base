@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.UnitTests
 {
-    public class BaseTest
+    [TestFixture]
+    public abstract class DbTestFixture
     {
         public Mapper Mapper { get; private set; }
         public DigitalOceanDbContext DbContext { get; private set; }

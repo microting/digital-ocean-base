@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Microting.DigitalOceanBase.UnitTests
 {
-    public class RebuildDropletTests : BaseTest
+    public class RebuildDropletTestsFixture : DbTestFixture
     {
 
         [Test]
