@@ -53,7 +53,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
         private async Task UpdateInternal<T>(DigitalOceanDbContext dbContext, string state = null) where T : BaseEntity
         {
-            using (var ctx = new DigitalOceanDbContextFactory().CreateDbContext(null))
+            using (var ctx = new DigitalOceanDbContextFactory().CreateDbContext(new string[] { }))
             {
                 var record = await ctx.Set<T>().FirstOrDefaultAsync(x => x.Id == Id);
                 if (record == null)
