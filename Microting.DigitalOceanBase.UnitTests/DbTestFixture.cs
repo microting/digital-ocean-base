@@ -15,8 +15,8 @@ namespace Microting.DigitalOceanBase.UnitTests
     [TestFixture]
     public abstract class DbTestFixture
     {
-        public Mapper Mapper { get; private set; }
-        public DigitalOceanDbContext DbContext { get; private set; }
+        protected Mapper Mapper { get; private set; }
+        protected DigitalOceanDbContext DbContext { get; private set; }
 
         [SetUp]
         protected async Task SetUp()
@@ -40,15 +40,17 @@ namespace Microting.DigitalOceanBase.UnitTests
 
         private async Task ClearDb()
         {
-            List<string> modelNames = new List<string>();
-            modelNames.Add("PluginConfigurationValues");
-            modelNames.Add("Droplets");
-            modelNames.Add("DropletTag");
-            modelNames.Add("Images");
-            modelNames.Add("Regions");
-            modelNames.Add("SizeRegion");
-            modelNames.Add("Sizes");
-            modelNames.Add("Tags");
+            List<string> modelNames = new List<string>
+            {
+                "PluginConfigurationValues",
+                "Droplets",
+                "DropletTag",
+                "Images",
+                "Regions",
+                "SizeRegion",
+                "Sizes",
+                "Tags"
+            };
 
             foreach (var modelName in modelNames)
             {
@@ -82,7 +84,7 @@ namespace Microting.DigitalOceanBase.UnitTests
         }
 
 
-        public static void CheckBaseCreateInfo(int userId, BaseEntity item)
+        protected static void CheckBaseCreateInfo(int userId, BaseEntity item)
         {
             Assert.AreEqual(item.Version, 1);
             Assert.AreEqual(item.CreatedByUserId, userId);
@@ -92,7 +94,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(item.WorkflowState, WorkflowStates.Created);
         }
 
-        public static void CheckBaseUpdateInfo(int userId, BaseEntity item, int version = 2)
+        protected static void CheckBaseUpdateInfo(int userId, BaseEntity item, int version = 2)
         {
             Assert.AreEqual(item.Version, version);
             Assert.AreEqual(item.CreatedByUserId, userId);
@@ -102,7 +104,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(item.WorkflowState, null);
         }
 
-        public static void CheckBaseRemoveInfo(int userId, BaseEntity item)
+        protected static void CheckBaseRemoveInfo(int userId, BaseEntity item)
         {
             Assert.AreEqual(item.Version, 2);
             Assert.AreEqual(item.CreatedByUserId, userId);
