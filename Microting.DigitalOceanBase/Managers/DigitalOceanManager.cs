@@ -25,7 +25,7 @@ namespace Microting.DigitalOceanBase.Managers
             _apiClient = apiClient;
             _mapper = mapper;
 
-            var cred = _dbContext.PluginConfigurationValues?.FirstOrDefault(t => t.Name == "DigitalOceanBaseSettings:DigitalOceanToken");
+            var cred = _dbContext.PluginConfigurationValues?.FirstOrDefault(t => t.Name == "MyMicrotingSettings:DigitalOceanToken");
             if (cred == null)
                 throw new NullReferenceException("DigitalOcean token is not found");
 

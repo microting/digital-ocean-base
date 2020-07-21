@@ -26,7 +26,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             await DbContext.PluginConfigurationValues.AddAsync(
                 new PluginConfigurationValue() 
                 {
-                    Name= "DigitalOceanBaseSettings:DigitalOceanToken"
+                    Name= "MyMicrotingSettings:DigitalOceanToken"
                 });
             await DbContext.SaveChangesAsync();
         }
