@@ -8,15 +8,10 @@ namespace Microting.DigitalOceanBase.Configuration
     public static class AutomaperConfiguration
     {
         public static MapperConfiguration MapperConfiguration = new MapperConfiguration(cfg => {
-            //cfg.AddGlobalIgnore("Id");
             cfg.AddGlobalIgnore("CreatedAt");
-            //cfg.AddGlobalIgnore("UpdatedAt");
             cfg.AddGlobalIgnore("CreatedByUserId");
-            //cfg.AddGlobalIgnore("UpdatedByUserId");
-            //cfg.AddGlobalIgnore("WorkflowState");
             cfg.AddGlobalIgnore("Version");
 
-            //cfg.CreateMap<Tag, Tag>();
             cfg.CreateMap<DropletTag, DropletTag>();
             cfg.CreateMap<Size, Size>();
             cfg.CreateMap<SizeRegion, SizeRegion>();

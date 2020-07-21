@@ -9,6 +9,10 @@
     <Authors>René Schultz Madsen</Authors>
     <Company>Microting A/S</Company>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="Managers\DigitalOceanManager.cs~RF8329d1e.TMP" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
