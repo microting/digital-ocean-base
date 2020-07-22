@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microting.DigitalOceanBase.Infrastructure.Api.Clients.Requests;
+using Microting.DigitalOceanBase.Infrastructure.Data;
 using Microting.DigitalOceanBase.Managers;
 using System;
 using System.IO;
@@ -19,7 +21,8 @@ namespace Microting.DigitalOceanBase.App
 
 
             var serviceProvider = new ServiceCollection()
-
+                .AddDbContext<DigitalOceanDbContext>(options =>
+                            options.UseMySql("host= localhost;Database=420_angular-my-microting-plugin;user = root;port=3306;Convert Zero Datetime = true;SslMode=none;PersistSecurityInfo=true;"))
                .AddDigitalOceanBaseServices()
                .BuildServiceProvider();
 
