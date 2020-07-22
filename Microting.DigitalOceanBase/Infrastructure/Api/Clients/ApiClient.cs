@@ -13,17 +13,13 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
         private DigitalOceanClient _doClient;
         private readonly IMapper _mapper;
 
-        public ApiClient(IMapper mapper)
+        public ApiClient(IMapper mapper, string token)
         {
-            
             _mapper = mapper;
-        }
-        
-        public void Init(string token)
-        {
+
             _doClient = new DigitalOceanClient(token);
         }
-
+        
         public async Task<List<Droplet>> GetDropletsList()
         {
             var droplets = await _doClient.Droplets.GetAll();

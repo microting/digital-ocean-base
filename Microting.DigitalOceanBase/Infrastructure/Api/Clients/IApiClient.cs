@@ -12,7 +12,6 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
         Task<List<Droplet>> GetDropletsList();
         Task<List<Image>> GetImagesList();
         Task<Action> GetStatus(long actionId);
-        void Init(string token);
         Task<Action> RebuildDroplet(long dropletId, long imageId);
     }
 }
