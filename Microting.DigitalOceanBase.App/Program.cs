@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microting.DigitalOceanBase.Infrastructure.Api.Clients.Requests;
+using Microting.DigitalOceanBase.Infrastructure.Data;
 using Microting.DigitalOceanBase.Managers;
 using System;
 using System.IO;
@@ -19,7 +21,8 @@ namespace Microting.DigitalOceanBase.App
 
 
             var serviceProvider = new ServiceCollection()
-
+                .AddDbContext<DigitalOceanDbContext>(options =>
+                            options.UseMySql("Server = localhost; port = 3306; Database = dobasedb; user = root; Convert Zero Datetime = true;"))
                .AddDigitalOceanBaseServices()
                .BuildServiceProvider();
 
@@ -31,8 +34,8 @@ namespace Microting.DigitalOceanBase.App
                 // create droplet - ok,  // check flags, ssh keys, change sizes and regions
                 // rebuild droplet  - to do
 
-                //Task.WaitAll(manager.FetchDropletsAsync(11));
-                Task.WaitAll(manager.RebuildDropletAsync(11, 194408182, 64531677));
+                Task.WaitAll(manager.FetchDropletsAsync(11));
+                //Task.WaitAll(manager.RebuildDropletAsync(11, 194408182, 64531677));
                 //Task.WaitAll(manager.CreateDropletAsync(11, new CreateDropletRequest()
                 //{
                 //    Name = "MyTestImage",
