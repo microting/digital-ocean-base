@@ -20,6 +20,11 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data
         public DbSet<Size> Sizes { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<SizeRegion> SizeRegion { get; set; }
+        public DbSet<DropletVersion> DropletVersions { get; set; }
+        public DbSet<ImageVersion> ImageVersions { get; set; }
+        public DbSet<DropletTagVersion> DropletTagVersions { get; set; }
+        public DbSet<SizeVersion> SizeVersions { get; set; }
+        public DbSet<SizeRegionVersion> SizeRegionVersions { get; set; }
 
         public DbSet<PluginConfigurationValue> PluginConfigurationValues { get; set; }
         public DbSet<PluginConfigurationValueVersion> PluginConfigurationValueVersions { get; set; }

@@ -22,7 +22,7 @@ namespace Microting.DigitalOceanBase.App
 
             var serviceProvider = new ServiceCollection()
                 .AddDbContext<DigitalOceanDbContext>(options =>
-                            options.UseMySql("host= localhost;Database=420_angular-my-microting-plugin;user = root;port=3306;Convert Zero Datetime = true;SslMode=none;PersistSecurityInfo=true;"))
+                            options.UseMySql("Server = localhost; port = 3306; Database = dobasedb; user = root; Convert Zero Datetime = true;"))
                .AddDigitalOceanBaseServices()
                .BuildServiceProvider();
 
@@ -34,8 +34,8 @@ namespace Microting.DigitalOceanBase.App
                 // create droplet - ok,  // check flags, ssh keys, change sizes and regions
                 // rebuild droplet  - to do
 
-                //Task.WaitAll(manager.FetchDropletsAsync(11));
-                Task.WaitAll(manager.RebuildDropletAsync(11, 194408182, 64531677));
+                Task.WaitAll(manager.FetchDropletsAsync(11));
+                //Task.WaitAll(manager.RebuildDropletAsync(11, 194408182, 64531677));
                 //Task.WaitAll(manager.CreateDropletAsync(11, new CreateDropletRequest()
                 //{
                 //    Name = "MyTestImage",
