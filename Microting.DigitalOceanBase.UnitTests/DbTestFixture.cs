@@ -24,7 +24,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Mapper = new Mapper(AutomaperConfiguration.MapperConfiguration);
             DbContext = new DigitalOceanDbContextFactory().CreateDbContext(new string[] { });
             await DbContext.PluginConfigurationValues.AddAsync(
-                new PluginConfigurationValue() 
+                new PluginConfigurationValue()
                 {
                     Name= "MyMicrotingSettings:DigitalOceanToken"
                 });
@@ -40,17 +40,20 @@ namespace Microting.DigitalOceanBase.UnitTests
 
         private async Task ClearDb()
         {
-            List<string> modelNames = new List<string>
-            {
-                "PluginConfigurationValues",
-                "Droplets",
-                "DropletTag",
-                "Images",
-                "Regions",
-                "SizeRegion",
-                "Sizes",
-                "Tags"
-            };
+            List<string> modelNames = new List<string>();
+            modelNames.Add("PluginConfigurationValues");
+            modelNames.Add("Droplets");
+            modelNames.Add("DropletVersions");
+            modelNames.Add("DropletTag");
+            modelNames.Add("DropletTagVersions");
+            modelNames.Add("Images");
+            modelNames.Add("ImageVersions");
+            modelNames.Add("Regions");
+            modelNames.Add("SizeRegion");
+            modelNames.Add("SizeRegionVersions");
+            modelNames.Add("Sizes");
+            modelNames.Add("SizeVersions");
+            modelNames.Add("Tags");
 
             foreach (var modelName in modelNames)
             {

@@ -41,6 +41,13 @@ namespace Microting.DigitalOceanBase.Configuration
                 .ForMember(t => t.Name, opts => opts.MapFrom(m => m));
             cfg.CreateMap<Image, Image>();
             cfg.CreateMap<CreateDropletRequest, DigitalOcean.API.Models.Requests.Droplet>();
+
+            cfg.CreateMap<Size, SizeVersion>();
+            cfg.CreateMap<SizeRegion, SizeRegionVersion>();
+            cfg.CreateMap<Droplet, DropletVersion>();
+            cfg.CreateMap<DropletTag, DropletTagVersion>();
+            cfg.CreateMap<Image, ImageVersion>();
+            
         });
     }
 }
