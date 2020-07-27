@@ -42,11 +42,16 @@ namespace Microting.DigitalOceanBase.UnitTests
             List<string> modelNames = new List<string>();
             modelNames.Add("PluginConfigurationValues");
             modelNames.Add("Droplets");
+            modelNames.Add("DropletVersions");
             modelNames.Add("DropletTag");
+            modelNames.Add("DropletTagVersions");
             modelNames.Add("Images");
+            modelNames.Add("ImageVersions");
             modelNames.Add("Regions");
             modelNames.Add("SizeRegion");
+            modelNames.Add("SizeRegionVersions");
             modelNames.Add("Sizes");
+            modelNames.Add("SizeVersions");
             modelNames.Add("Tags");
 
             foreach (var modelName in modelNames)
