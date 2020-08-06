@@ -13,6 +13,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data
             optionsBuilder.UseMySql(args.Any() ? args[0]: defaultCs);
 
             return new DigitalOceanDbContext(optionsBuilder.Options);
+            // dotnet ef migrations add InitialCreate --project Microting.DigitalOceanBase --startup-project DBMigrator
         }
     }
 }

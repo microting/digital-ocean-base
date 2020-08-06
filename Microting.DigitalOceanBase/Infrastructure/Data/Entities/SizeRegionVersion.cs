@@ -7,5 +7,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public int RegionId { get; set; }
 
         public int SizeId { get; set; }
+
+        public int SizeRegionId { get; set; }
     }
 }

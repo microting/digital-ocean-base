@@ -18,5 +18,6 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         //public List<Tag> Tags { get; set; }
         public string Status { get; set; }
         public string ErrorMessage { get; set; }
+        public int ImageId { get; set; }
     }
 }

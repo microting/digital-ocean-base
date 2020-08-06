@@ -29,6 +29,16 @@ namespace Microting.DigitalOceanBase.Configuration
                 .ForMember(t => t.PublicIpV6, opts => opts.MapFrom(m => m.Networks.V6.FirstOrDefault(g => g.Type == "public") == null ? null : m.Networks.V6.FirstOrDefault(g => g.Type == "public").IpAddress))
                 .ForMember(t => t.PrivateIpV4, opts => opts.MapFrom(m => m.Networks.V4.FirstOrDefault(g => g.Type != "public") == null ? null : m.Networks.V4.FirstOrDefault(g => g.Type != "public").IpAddress))
                 .ForMember(t => t.PublicIpV4, opts => opts.MapFrom(m => m.Networks.V4.FirstOrDefault(g => g.Type == "public") == null ? null : m.Networks.V4.FirstOrDefault(g => g.Type == "public").IpAddress));
+            cfg.CreateMap<Droplet, DropletVersion>().ForMember(t => t.DropletId, opts => opts.MapFrom(m => m.Id))
+                .ForMember(t => t.Id, opts => opts.Ignore());
+            cfg.CreateMap<DropletTag, DropletTagVersion>().ForMember(t => t.DropletTagId, opts => opts.MapFrom(m => m.Id))
+                .ForMember(t => t.Id, opts => opts.Ignore());
+            cfg.CreateMap<SizeRegion, SizeRegionVersion>().ForMember(t => t.SizeRegionId, opts => opts.MapFrom(m => m.Id))
+                .ForMember(t => t.Id, opts => opts.Ignore());
+            cfg.CreateMap<Image, ImageVersion>().ForMember(t => t.ImageId, opts => opts.MapFrom(m => m.Id))
+                .ForMember(t => t.Id, opts => opts.Ignore());
+            cfg.CreateMap<Size, SizeVersion>().ForMember(t => t.SizeId, opts => opts.MapFrom(m => m.Id))
+                .ForMember(t => t.Id, opts => opts.Ignore());
 
             cfg.CreateMap<DigitalOcean.API.Models.Responses.Image, Image>()
                .ForMember(t => t.Id, opts => opts.Ignore())
@@ -41,13 +51,6 @@ namespace Microting.DigitalOceanBase.Configuration
                 .ForMember(t => t.Name, opts => opts.MapFrom(m => m));
             cfg.CreateMap<Image, Image>();
             cfg.CreateMap<CreateDropletRequest, DigitalOcean.API.Models.Requests.Droplet>();
-
-            cfg.CreateMap<Size, SizeVersion>();
-            cfg.CreateMap<SizeRegion, SizeRegionVersion>();
-            cfg.CreateMap<Droplet, DropletVersion>();
-            cfg.CreateMap<DropletTag, DropletTagVersion>();
-            cfg.CreateMap<Image, ImageVersion>();
-            
         });
     }
 }

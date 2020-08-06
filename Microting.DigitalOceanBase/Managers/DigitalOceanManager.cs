@@ -103,8 +103,8 @@ namespace Microting.DigitalOceanBase.Managers
 
         public async Task FetchDropletsAsync(int userId)
         {
-            await SyncDropletsInfo(userId);
             await SyncImageInfo(userId);
+            await SyncDropletsInfo(userId);
         }
 
 
@@ -128,14 +128,18 @@ namespace Microting.DigitalOceanBase.Managers
                 if (dbImage == null)
                 {
                     item.CreatedByUserId = userId;
+                    item.UpdatedByUserId = userId;
                     await item.Create(_dbContext);
                     continue;
                 }
 
                 // check update
-                item.Id = dbImage.Id;
-                item.UpdatedByUserId = userId;
-                await item.Update<Image>(_dbContext);
+                dbImage.Description = item.Description;
+                dbImage.Name = item.Name;
+                dbImage.Public = item.Public;
+                dbImage.Status = item.Status;
+                dbImage.UpdatedByUserId = userId;
+                await dbImage.Update<Image>(_dbContext);
             }
 
             foreach (var item in storedImages)
@@ -179,8 +183,8 @@ namespace Microting.DigitalOceanBase.Managers
                 // add new droplet
                 if (dbDroplet == null)
                 {
-                    await CreateDropletRecord(userId, apiDroplet, apiSize, apiTags, apiReg);
-                    continue;
+                     await CreateDropletRecord(userId, apiDroplet, apiSize, apiTags, apiReg);
+                     continue;
                 }
 
                 await UpdateDroplet(userId, apiDroplet, dbDroplet);
@@ -200,11 +204,14 @@ namespace Microting.DigitalOceanBase.Managers
                 apiDroplet.Size.SizeRegions = null;
                 apiDroplet.Size.Id = dbDroplet.Sizeid;
                 apiDroplet.Size.UpdatedByUserId = userId;
+                apiDroplet.Size.UpdatedAt = dbDroplet.Size.UpdatedAt;
                 await apiDroplet.Size.Update<Size>(_dbContext);
 
                 apiDroplet.Id = dbDroplet.Id;
                 apiDroplet.DropletTags = null;
                 apiDroplet.UpdatedByUserId = userId;
+                apiDroplet.UpdatedAt = dbDroplet.UpdatedAt;
+                apiDroplet.Sizeid = apiDroplet.Size.Id;
                 await apiDroplet.Update<Droplet>(_dbContext);
 
                 var sizeReg = dbDroplet.Size.SizeRegions.Select(t => new SizeRegion() { Size = apiDroplet.Size, Region = t.Region }).ToList();
@@ -290,22 +297,24 @@ namespace Microting.DigitalOceanBase.Managers
             using (var tran = _dbContext.Database.BeginTransaction())
             {
                 apiSize.CreatedByUserId = userId;
+                apiSize.UpdatedByUserId = userId;
                 await apiSize.Create(_dbContext);
 
                 foreach (var region in apiRegions)
                 {
-                    var sr = new SizeRegion() { Size = apiSize, Region = region, CreatedByUserId = userId };
+                    var sr = new SizeRegion() { Size = apiSize, Region = region, CreatedByUserId = userId, UpdatedByUserId = userId};
                     apiSize.SizeRegions.Add(sr);
                     await sr.Create(_dbContext);
                 }
 
                 apiDroplet.Size = apiSize;
                 apiDroplet.CreatedByUserId = userId;
+                apiDroplet.UpdatedByUserId = userId;
                 await apiDroplet.Create(_dbContext);
 
                 foreach (var tag in apiTags)
                 {
-                    var dt = new DropletTag() { Droplet = apiDroplet, Tag = tag, CreatedByUserId = userId };
+                    var dt = new DropletTag() { Droplet = apiDroplet, Tag = tag, CreatedByUserId = userId, UpdatedByUserId = userId };
                     apiDroplet.DropletTags.Add(dt);
                     await dt.Create(_dbContext);
                 }
@@ -324,6 +333,7 @@ namespace Microting.DigitalOceanBase.Managers
                 if (dbRegion == null)
                 {
                     regions[i].CreatedByUserId = userId;
+                    regions[i].UpdatedByUserId = userId;
                     await regions[i].Create(_dbContext);
                 }
                 else
@@ -339,6 +349,7 @@ namespace Microting.DigitalOceanBase.Managers
                 if (dbTag == null)
                 {
                     apiTags[i].CreatedByUserId = userId;
+                    apiTags[i].UpdatedByUserId = userId;
                     await apiTags[i].Create(_dbContext);
                 }
                 else

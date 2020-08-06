@@ -7,5 +7,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public int DropletId { get; set; }
 
         public int TagId { get; set; }
+
+        public int DropletTagId { get; set; }
     }
 }

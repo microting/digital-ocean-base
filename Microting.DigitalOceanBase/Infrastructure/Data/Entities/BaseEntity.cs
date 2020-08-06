@@ -33,8 +33,8 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
         public async Task Create(DigitalOceanDbContext dbContext)
         {
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
             Version = 1;
             WorkflowState = Constants.WorkflowStates.Created;
 
@@ -75,7 +75,6 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
                 if (ctx.ChangeTracker.HasChanges())
                 {
-                    Id = 0;
                     UpdatedAt = DateTime.UtcNow;
                     UpdatedByUserId = UpdatedByUserId;
                     Version = record.Version + 1;
@@ -85,7 +84,6 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
                     if (state != null)
                         WorkflowState = state;
 
-                    await dbContext.AddAsync(this);
                     await dbContext.SaveChangesAsync();
 
                     var res = MapVersion(this);

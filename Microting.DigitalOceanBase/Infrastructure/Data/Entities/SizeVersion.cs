@@ -16,5 +16,6 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public int Vcpus { get; set; }
         public int Disk { get; set; }
         public bool Available { get; set; }
+        public int SizeId { get; set; }
     }
 }

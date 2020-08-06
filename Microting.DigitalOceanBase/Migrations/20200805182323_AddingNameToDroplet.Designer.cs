@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microting.DigitalOceanBase.Infrastructure.Data;
 
 namespace Microting.DigitalOceanBase.Migrations
 {
     [DbContext(typeof(DigitalOceanDbContext))]
-    partial class DigitalOceanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200805182323_AddingNameToDroplet")]
+    partial class AddingNameToDroplet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,9 +152,6 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<int>("DropletId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DropletTagId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TagId")
                         .HasColumnType("int");
 
@@ -199,9 +198,6 @@ namespace Microting.DigitalOceanBase.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("DoUid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DropletId")
                         .HasColumnType("int");
 
                     b.Property<int>("DropletTagId")
@@ -347,9 +343,6 @@ namespace Microting.DigitalOceanBase.Migrations
 
                     b.Property<DateTime>("ImageCreatedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
 
                     b.Property<int>("MinDiskSize")
                         .HasColumnType("int");
@@ -535,9 +528,6 @@ namespace Microting.DigitalOceanBase.Migrations
                     b.Property<int>("SizeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SizeRegionId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -585,9 +575,6 @@ namespace Microting.DigitalOceanBase.Migrations
 
                     b.Property<decimal>("PriceMonthly")
                         .HasColumnType("decimal(65,30)");
-
-                    b.Property<int>("SizeId")
-                        .HasColumnType("int");
 
                     b.Property<int>("SizeRegionId")
                         .HasColumnType("int");
