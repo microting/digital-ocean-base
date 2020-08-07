@@ -9,6 +9,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 
 namespace Microting.DigitalOceanBase.UnitTests
 {
@@ -29,12 +30,12 @@ namespace Microting.DigitalOceanBase.UnitTests
                     Name= "MyMicrotingSettings:DigitalOceanToken"
                 });
             await DbContext.SaveChangesAsync();
+            await ClearDb();
         }
 
         [TearDown]
         public async Task TearDown()
         {
-            await ClearDb();
             await DbContext.DisposeAsync();
         }
 
@@ -91,30 +92,30 @@ namespace Microting.DigitalOceanBase.UnitTests
         {
             Assert.AreEqual(item.Version, 1);
             Assert.AreEqual(item.CreatedByUserId, userId);
-            Assert.AreEqual(item.UpdatedByUserId, 0);
+            Assert.AreEqual(item.UpdatedByUserId, userId);
             Assert.AreNotEqual(item.CreatedAt, default(DateTime));
             Assert.AreNotEqual(item.UpdatedAt, default(DateTime));
             Assert.AreEqual(item.WorkflowState, WorkflowStates.Created);
         }
 
-        protected static void CheckBaseUpdateInfo(int userId, BaseEntity item, int version = 2)
+        protected static void CheckBaseUpdateInfo(int userId, BaseEntity item, int version = 1)
         {
-            Assert.AreEqual(item.Version, version);
-            Assert.AreEqual(item.CreatedByUserId, userId);
-            Assert.AreEqual(item.UpdatedByUserId, userId);
-            Assert.AreNotEqual(item.CreatedAt, default(DateTime));
-            Assert.AreNotEqual(item.UpdatedAt, default(DateTime));
-            Assert.AreEqual(item.WorkflowState, null);
+            Assert.AreEqual(version,item.Version);
+            Assert.AreEqual(userId, item.CreatedByUserId);
+            Assert.AreEqual(userId, item.UpdatedByUserId);
+            Assert.AreNotEqual(default(DateTime), item.CreatedAt);
+            Assert.AreNotEqual(default(DateTime),item.UpdatedAt);
+            Assert.AreEqual("created", item.WorkflowState);
         }
 
         protected static void CheckBaseRemoveInfo(int userId, BaseEntity item)
         {
-            Assert.AreEqual(item.Version, 2);
-            Assert.AreEqual(item.CreatedByUserId, userId);
-            Assert.AreEqual(item.UpdatedByUserId, userId);
-            Assert.AreNotEqual(item.CreatedAt, default(DateTime));
-            Assert.AreNotEqual(item.UpdatedAt, default(DateTime));
-            Assert.AreEqual(item.WorkflowState, WorkflowStates.Removed);
+            Assert.AreEqual(2, item.Version);
+            Assert.AreEqual(userId, item.CreatedByUserId );
+            Assert.AreEqual(userId, item.UpdatedByUserId);
+            Assert.AreNotEqual(default(DateTime), item.CreatedAt);
+            Assert.AreNotEqual(default(DateTime), item.UpdatedAt);
+            Assert.AreEqual(WorkflowStates.Removed, item.WorkflowState);
         }
     }
 }

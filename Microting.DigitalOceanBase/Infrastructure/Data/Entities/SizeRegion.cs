@@ -9,8 +9,5 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
         [ForeignKey("Id")]
         public int SizeId { get; set; }
-
-        public Size Size { get; set; }
-        public Region Region { get; set; }
     }
 }

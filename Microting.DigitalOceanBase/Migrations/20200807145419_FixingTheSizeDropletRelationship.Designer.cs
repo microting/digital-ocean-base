@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microting.DigitalOceanBase.Infrastructure.Data;
 
 namespace Microting.DigitalOceanBase.Migrations
 {
     [DbContext(typeof(DigitalOceanDbContext))]
-    partial class DigitalOceanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200807145419_FixingTheSizeDropletRelationship")]
+    partial class FixingTheSizeDropletRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -510,6 +512,8 @@ namespace Microting.DigitalOceanBase.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RegionId");
+
                     b.HasIndex("SizeId");
 
                     b.ToTable("SizeRegion");
@@ -860,7 +864,13 @@ namespace Microting.DigitalOceanBase.Migrations
 
             modelBuilder.Entity("Microting.DigitalOceanBase.Infrastructure.Data.Entities.SizeRegion", b =>
                 {
-                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Size", null)
+                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Region", "Region")
+                        .WithMany()
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microting.DigitalOceanBase.Infrastructure.Data.Entities.Size", "Size")
                         .WithMany("SizeRegions")
                         .HasForeignKey("SizeId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -30,7 +30,6 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public int UpdatedByUserId { get; set; }
         public int Version { get; set; }
 
-
         public async Task Create(DigitalOceanDbContext dbContext)
         {
             CreatedAt = DateTime.UtcNow;
@@ -47,7 +46,6 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
                 await dbContext.AddAsync(res);
                 await dbContext.SaveChangesAsync();
             }
-            
         }
 
         public async Task Update<T>(DigitalOceanDbContext dbContext) where T : BaseEntity
@@ -62,36 +60,23 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
         private async Task UpdateInternal<T>(DigitalOceanDbContext dbContext, string state = null) where T : BaseEntity
         {
-            using (var ctx = new DigitalOceanDbContextFactory().CreateDbContext(new string[] { dbContext.Database.GetDbConnection().ConnectionString }))
+            if (state != null)
             {
-                var record = await ctx.Set<T>().FirstOrDefaultAsync(x => x.Id == Id);
-                if (record == null)
-                    throw new NullReferenceException($"Could not find {this.GetType().Name} with ID: {Id}");
+                WorkflowState = state;
+            }
 
-                Mapper.Map(this, record);
+            if (dbContext.ChangeTracker.HasChanges())
+            {
+                Version += 1;
+                UpdatedAt = DateTime.UtcNow;
 
-                if (state != null)
-                    record.WorkflowState = state;
+                await dbContext.SaveChangesAsync();
 
-                if (ctx.ChangeTracker.HasChanges())
+                var res = MapVersion(this);
+                if (res != null)
                 {
-                    UpdatedAt = DateTime.UtcNow;
-                    UpdatedByUserId = UpdatedByUserId;
-                    Version = record.Version + 1;
-                    CreatedAt = record.CreatedAt;
-                    CreatedByUserId = record.CreatedByUserId;
-
-                    if (state != null)
-                        WorkflowState = state;
-
+                    await dbContext.AddAsync(res);
                     await dbContext.SaveChangesAsync();
-
-                    var res = MapVersion(this);
-                    if (res != null)
-                    {
-                        await dbContext.AddAsync(res);
-                        await dbContext.SaveChangesAsync();
-                    }
                 }
             }
         }

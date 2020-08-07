@@ -305,7 +305,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             }
 
             // size
-            CheckBaseUpdateInfo(userId, createdSize);
+            CheckBaseUpdateInfo(userId, createdSize, 2);
             Assert.AreEqual(createdSize.Memory, secondDropletResponse.Size.Memory);
             Assert.AreEqual(createdSize.PriceHourly, secondDropletResponse.Size.PriceHourly);
             Assert.AreEqual(createdSize.PriceMonthly, secondDropletResponse.Size.PriceMonthly);
@@ -315,7 +315,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdSize.Disk, secondDropletResponse.Size.Disk);
 
             // droplet
-            CheckBaseUpdateInfo(userId, createdDroplet);
+            CheckBaseUpdateInfo(userId, createdDroplet, 2);
             Assert.AreEqual(createdDroplet.DoUid, secondDropletResponse.Id);
             Assert.AreEqual(createdDroplet.CustomerNo, 0);
             Assert.AreEqual(createdDroplet.PublicIpV4, secondDropletResponse.Networks.V4[0].IpAddress);
@@ -427,15 +427,15 @@ namespace Microting.DigitalOceanBase.UnitTests
 
 
             // Assert
-            var createdDroplet = (await DbContext.Droplets.ToListAsync()).Last();
-            var createdSize = (await DbContext.Sizes.ToListAsync()).Last();
-            var createdDropletTags = await DbContext.DropletTag.Where(t => t.DropletId == createdDroplet.Id).ToListAsync();
-            var createdSizeRegions = await DbContext.SizeRegion.Where(t => t.SizeId == createdSize.Id).ToListAsync();
-            var createdTags = (await DbContext.Tags.ToListAsync())
+            var createdDroplet = (await DbContext.Droplets.AsNoTracking().ToListAsync()).Last();
+            var createdSize = (await DbContext.Sizes.AsNoTracking().ToListAsync()).Last();
+            var createdDropletTags = await DbContext.DropletTag.AsNoTracking().Where(t => t.DropletId == createdDroplet.Id).ToListAsync();
+            var createdSizeRegions = await DbContext.SizeRegion.AsNoTracking().Where(t => t.SizeId == createdSize.Id).ToListAsync();
+            var createdTags = (await DbContext.Tags.AsNoTracking().ToListAsync())
                 .Where(t => createdDropletTags.Select(t => t.TagId)
                 .Contains(t.Id))
                 .ToList();
-            var createdRegions = (await DbContext.Regions.ToListAsync())
+            var createdRegions = (await DbContext.Regions.AsNoTracking().ToListAsync())
                 .Where(t => createdSizeRegions.Select(t => t.RegionId)
                 .Contains(t.Id))
                 .ToList();
@@ -497,7 +497,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             Assert.AreEqual(createdSizeRegions.Count, createdRegions.Count);
             foreach (var sr in createdSizeRegions)
             {
-                CheckBaseRemoveInfo(userId, sr);
+                CheckBaseCreateInfo(userId, sr);
 
                 Assert.AreEqual(createdSize.Id, sr.SizeId);
                 Assert.IsTrue(createdRegions.Select(t => t.Id).Contains(sr.RegionId));
@@ -571,7 +571,7 @@ namespace Microting.DigitalOceanBase.UnitTests
                 Distribution = "test distributionupdate",
                 Public = true,
                 Regions = new List<string>() { "nyc3" },
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 MinDiskSize = 50,
                 SizeGigabytes = 53,
                 Description = "test image description update",
@@ -594,7 +594,7 @@ namespace Microting.DigitalOceanBase.UnitTests
                 Type = "test image type",
                 Distribution = "test distribution",
                 Public = true,
-                CreatedAt = DateTime.Now,
+                CreatedAt = resp.CreatedAt,
                 MinDiskSize = 50,
                 SizeGigabytes = 53,
                 Description = "test image description",
@@ -602,7 +602,7 @@ namespace Microting.DigitalOceanBase.UnitTests
                 CreatedByUserId = userId,
                 Version = 1,
                 WorkflowState = WorkflowStates.Created,
-                ImageCreatedAt = DateTime.Now,
+                ImageCreatedAt = resp.CreatedAt,
                 ErrorMessage = null
             };
             await DbContext.Images.AddAsync(firstImage);
@@ -616,12 +616,12 @@ namespace Microting.DigitalOceanBase.UnitTests
             var updatedImageList = await DbContext.Images.ToListAsync();
             var updatedImage = updatedImageList.Last();
 
-            CheckBaseUpdateInfo(userId, updatedImage);
+            CheckBaseUpdateInfo(userId, updatedImage, 2);
             Assert.AreEqual(updatedImage.DoUid, resp.Id);
             Assert.AreEqual(updatedImage.Name, resp.Name);
-            Assert.AreEqual(updatedImage.Type, resp.Type);
-            Assert.AreEqual(updatedImage.Distribution, resp.Distribution);
-            Assert.AreEqual(updatedImage.Slug, resp.Slug);
+            Assert.AreEqual("test image typeupdate", resp.Type);
+            Assert.AreEqual("test distributionupdate", resp.Distribution);
+            Assert.AreEqual("s-1vcpu-1gbimageupdate", resp.Slug);
             Assert.AreEqual(updatedImage.Public, resp.Public);
             Assert.AreEqual(updatedImage.ImageCreatedAt, resp.CreatedAt);
             Assert.AreEqual(updatedImage.MinDiskSize, resp.MinDiskSize);

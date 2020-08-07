@@ -23,11 +23,9 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public bool MonitoringEnabled { get; set; }
         public bool IpV6Enabled { get; set; }
         public bool BackupsEnabled { get; set; }
-        public Size Size { get; set; }
         public List<DropletTag> DropletTags { get; set; }
         public string Name { get; set; }
 
-        [ForeignKey("Id")]
         public int Sizeid { get; set; }
     }
 }

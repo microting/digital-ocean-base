@@ -8,16 +8,13 @@ namespace Microting.DigitalOceanBase.Configuration
     public static class AutomaperConfiguration
     {
         public static MapperConfiguration MapperConfiguration = new MapperConfiguration(cfg => {
-            cfg.AddGlobalIgnore("CreatedAt");
-            cfg.AddGlobalIgnore("CreatedByUserId");
-            cfg.AddGlobalIgnore("Version");
 
             cfg.CreateMap<DropletTag, DropletTag>();
             cfg.CreateMap<Size, Size>();
             cfg.CreateMap<SizeRegion, SizeRegion>();
             cfg.CreateMap<Droplet, Droplet>()
-                .ForMember(t => t.DropletTags, opts => opts.MapFrom(m => m.DropletTags))
-                .ForMember(t => t.Size, opts => opts.MapFrom(m => m.Size));
+                .ForMember(t => t.DropletTags, opts => opts.MapFrom(m => m.DropletTags));
+                //.ForMember(t => t.Size, opts => opts.MapFrom(m => m.Size));
             cfg.CreateMap<DigitalOcean.API.Models.Responses.Droplet, Droplet>()
                 .ForMember(t => t.Id, opts => opts.Ignore())
                 .ForMember(t => t.DoUid, opts => opts.MapFrom(m => m.Id))

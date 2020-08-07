@@ -9,7 +9,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             SizeRegions = new List<SizeRegion>();
         }
 
-        public Droplet Droplet { get; set; }
+        public int DropletId { get; set; }
         public List<SizeRegion> SizeRegions { get; set; }
         public string Slug { get; set; }
         public double Transfer { get; set; }
