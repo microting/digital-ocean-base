@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microting.DigitalOceanBase.Configuration;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -12,13 +13,6 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 {
     public abstract class BaseEntity
     {
-        protected Mapper Mapper { get; private set; }
-
-        public BaseEntity()
-        {
-            Mapper = new Mapper(AutomaperConfiguration.MapperConfiguration);
-        }
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -90,7 +84,39 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             if (resultType == null)
                 return null;
 
-            return Mapper.Map(obj, className.GetType(), resultType);
+            var returnObj = Activator.CreateInstance(resultType);
+
+            var curreList = obj.GetType().GetProperties();
+            foreach(var prop in curreList)
+            {
+                if (!prop.PropertyType.IsGenericType)
+                {
+                    try
+                    {
+                        var propName = prop.Name;
+                        if (propName != "Id")
+                        {
+                            var propValue = prop.GetValue(obj);
+                            Type targetType = returnObj.GetType();
+                            PropertyInfo targetProp = targetType.GetProperty(propName);
+
+                            targetProp.SetValue(returnObj, propValue, null);
+                        } else {
+                            var propValue = prop.GetValue(obj);
+                            Type targetType = returnObj.GetType();
+                            PropertyInfo targetProp = targetType.GetProperty($"{className}Id");
+
+                            targetProp.SetValue(returnObj, propValue, null);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Console.WriteLine($"{ex.Message} - Property:{prop.Name} probably not found on Class {returnObj.GetType().Name}");
+                    }
+                }
+            }
+
+            return returnObj;
         }
     }
 }

@@ -5,9 +5,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 {
     public class SizeVersion : BaseEntity
     {
-        public Droplet Droplet { get; set; }
-        [ForeignKey("Id")]
-        public int SizeRegionId { get; set; }
+        public int DropletId { get; set; }
         public string Slug { get; set; }
         public double Transfer { get; set; }
         public decimal PriceMonthly { get; set; }
