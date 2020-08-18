@@ -1,6 +1,4 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microting.DigitalOceanBase.Configuration;
 using Microting.DigitalOceanBase.Infrastructure.Constants;
 using Microting.DigitalOceanBase.Infrastructure.Data;
 using Microting.DigitalOceanBase.Infrastructure.Data.Entities;
@@ -16,13 +14,11 @@ namespace Microting.DigitalOceanBase.UnitTests
     [TestFixture]
     public abstract class DbTestFixture
     {
-        protected Mapper Mapper { get; private set; }
         protected DigitalOceanDbContext DbContext { get; private set; }
 
         [SetUp]
         protected async Task SetUp()
         {
-            Mapper = new Mapper(AutomaperConfiguration.MapperConfiguration);
             DbContext = new DigitalOceanDbContextFactory().CreateDbContext(new string[] { });
             await DbContext.PluginConfigurationValues.AddAsync(
                 new PluginConfigurationValue()

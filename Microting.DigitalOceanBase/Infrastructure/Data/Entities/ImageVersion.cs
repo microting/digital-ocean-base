@@ -4,7 +4,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 {
     public class ImageVersion : BaseEntity
     {
-        public int DoUid { get; set; }
+        public long DoUid { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public string Distribution { get; set; }

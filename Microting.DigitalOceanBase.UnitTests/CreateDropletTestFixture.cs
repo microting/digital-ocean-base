@@ -69,7 +69,7 @@ namespace Microting.DigitalOceanBase.UnitTests
 
             var apiClient = new Mock<IApiClient>();
             apiClient.Setup(g => g.CreateDroplet(It.IsAny<CreateDropletRequest>())).Returns(apiResp);
-            var manager = new DigitalOceanManager(DbContext, apiClient.Object, Mapper);
+            var manager = new DigitalOceanManager(DbContext, apiClient.Object);
 
             // Act
             var droplet = await manager.CreateDropletAsync(userId, new CreateDropletRequest()

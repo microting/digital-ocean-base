@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using DigitalOcean.API;
+﻿using DigitalOcean.API;
 using DigitalOcean.API.Models.Responses;
 using Microting.DigitalOceanBase.Infrastructure.Api.Clients.Requests;
 using System.Collections.Generic;
@@ -11,12 +10,9 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
     internal class ApiClient : IApiClient
     {
         private DigitalOceanClient _doClient;
-        private readonly IMapper _mapper;
 
-        public ApiClient(IMapper mapper, string token)
+        public ApiClient(string token)
         {
-            _mapper = mapper;
-
             _doClient = new DigitalOceanClient(token);
         }
         
@@ -48,7 +44,8 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients
 
         public async Task<Droplet> CreateDroplet(CreateDropletRequest request)
         {
-            var doRequest = _mapper.Map<CreateDropletRequest, DigitalOcean.API.Models.Requests.Droplet>(request);
+            var doRequest = request.ToDroplet();
+            //var doRequest = _mapper.Map<CreateDropletRequest, DigitalOcean.API.Models.Requests.Droplet>(request);
 
             if (request.SshKeys == null)
             {

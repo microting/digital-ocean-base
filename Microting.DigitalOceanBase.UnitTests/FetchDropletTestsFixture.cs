@@ -73,7 +73,7 @@ namespace Microting.DigitalOceanBase.UnitTests
 
             var apiClient = new Mock<IApiClient>();
             apiClient.Setup(g => g.GetDropletsList()).Returns(apiResp);
-            var manager = new DigitalOceanManager(DbContext, apiClient.Object, Mapper);
+            var manager = new DigitalOceanManager(DbContext, apiClient.Object);
 
             // Act
             await manager.FetchDropletsAsync(userId);
@@ -211,7 +211,7 @@ namespace Microting.DigitalOceanBase.UnitTests
 
             var apiClient = new Mock<IApiClient>();
             apiClient.Setup(g => g.GetDropletsList()).Returns(apiResp);
-            var manager = new DigitalOceanManager(DbContext, apiClient.Object, Mapper);
+            var manager = new DigitalOceanManager(DbContext, apiClient.Object);
             await manager.FetchDropletsAsync(userId);
             #endregion
 
@@ -414,7 +414,7 @@ namespace Microting.DigitalOceanBase.UnitTests
 
             var apiClient = new Mock<IApiClient>();
             apiClient.Setup(g => g.GetDropletsList()).Returns(apiResp);
-            var manager = new DigitalOceanManager(DbContext, apiClient.Object, Mapper);
+            var manager = new DigitalOceanManager(DbContext, apiClient.Object);
             await manager.FetchDropletsAsync(userId);
             #endregion
 
@@ -532,7 +532,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             var apiClient = new Mock<IApiClient>();
             apiClient.Setup(g => g.GetDropletsList()).Returns(Task.FromResult(new List<DigitalOcean.API.Models.Responses.Droplet>()));
             apiClient.Setup(g => g.GetImagesList()).Returns(apiResp);
-            var manager = new DigitalOceanManager(DbContext, apiClient.Object, Mapper);
+            var manager = new DigitalOceanManager(DbContext, apiClient.Object);
 
             // Act
             await manager.FetchDropletsAsync(userId);
@@ -584,7 +584,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             var apiClient = new Mock<IApiClient>();
             apiClient.Setup(g => g.GetDropletsList()).Returns(Task.FromResult(new List<DigitalOcean.API.Models.Responses.Droplet>()));
             apiClient.Setup(g => g.GetImagesList()).Returns(apiResp);
-            var manager = new DigitalOceanManager(DbContext, apiClient.Object, Mapper);
+            var manager = new DigitalOceanManager(DbContext, apiClient.Object);
 
             var firstImage = new Image() 
             {
@@ -641,7 +641,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             var apiClient = new Mock<IApiClient>();
             apiClient.Setup(g => g.GetDropletsList()).Returns(Task.FromResult(new List<DigitalOcean.API.Models.Responses.Droplet>()));
             apiClient.Setup(g => g.GetImagesList()).Returns(apiResp);
-            var manager = new DigitalOceanManager(DbContext, apiClient.Object, Mapper);
+            var manager = new DigitalOceanManager(DbContext, apiClient.Object);
 
             var firstImage = new Image()
             {

@@ -19,5 +19,16 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
         public int Vcpus { get; set; }
         public int Disk { get; set; }
         public bool Available { get; set; }
+
+        public Size(DigitalOcean.API.Models.Responses.Size apiSize)
+        {
+            Slug = apiSize.Slug;
+            Memory = apiSize.Memory;
+            PriceHourly = apiSize.PriceHourly;
+            PriceMonthly = apiSize.PriceMonthly;
+            Transfer = apiSize.Transfer;
+            Vcpus = apiSize.Vcpus;
+            Disk = apiSize.Disk;
+        }
     }
 }

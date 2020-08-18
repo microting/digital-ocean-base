@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DigitalOcean.API.Models.Requests;
 
 namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients.Requests
 {
@@ -19,5 +20,25 @@ namespace Microting.DigitalOceanBase.Infrastructure.Api.Clients.Requests
         public List<string> Tags { get; set; }
         public List<string> Volumes { get; set; }
         public string VpcUuid { get; set; }
+
+        public Droplet ToDroplet()
+        {
+            return new Droplet()
+            {
+                Backups = this.Backups,
+                Image = this.Image,
+                Ipv6 = this.Ipv6,
+                Monitoring = Monitoring,
+                Name = Name,
+                PrivateNetworking = PrivateNetworking,
+                Region = Region,
+                Size = Size,
+                SshKeys = SshKeys,
+                Tags = Tags,
+                Volumes = Volumes,
+                UserData = UserData,
+                VpcUuid = VpcUuid
+            };
+        }
     }
 }

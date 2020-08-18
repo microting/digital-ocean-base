@@ -93,7 +93,7 @@ namespace Microting.DigitalOceanBase.UnitTests
             apiClient.Setup(g => g.GetDropletsList()).Returns(apiDropletResp);
             apiClient.Setup(g => g.RebuildDroplet(It.IsAny<long>(), It.IsAny<long>())).Returns(Task.FromResult(rebuildResp));
             apiClient.Setup(g => g.GetImagesList()).Returns(apiImageResp);
-            var manager = new DigitalOceanManager(DbContext, apiClient.Object, Mapper);
+            var manager = new DigitalOceanManager(DbContext, apiClient.Object);
 
             // Act
             await manager.FetchDropletsAsync(userId);
