@@ -48,17 +48,17 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             }
         }
 
-        public async Task Update<T>(DigitalOceanDbContext dbContext) where T : BaseEntity
+        public async Task Update(DigitalOceanDbContext dbContext)
         {
-            await UpdateInternal<T>(dbContext);
+            await UpdateInternal(dbContext);
         }
 
-        public async Task Delete<T>(DigitalOceanDbContext dbContext) where T : BaseEntity
+        public async Task Delete(DigitalOceanDbContext dbContext)
         {
-            await UpdateInternal<T>(dbContext, Constants.WorkflowStates.Removed);
+            await UpdateInternal(dbContext, Constants.WorkflowStates.Removed);
         }
 
-        private async Task UpdateInternal<T>(DigitalOceanDbContext dbContext, string state = null) where T : BaseEntity
+        private async Task UpdateInternal(DigitalOceanDbContext dbContext, string state = null)
         {
             if (state != null)
             {
@@ -81,14 +81,16 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
             }
         }
 
-        private object MapVersion<T>(T entity) where T: BaseEntity
+        private object MapVersion(object obj)
         {
-            var name = entity.GetType().FullName + "Version";
+            Type type = obj.GetType().UnderlyingSystemType;
+            String className = type.Name;
+            var name = obj.GetType().FullName + "Version";
             var resultType = Assembly.GetExecutingAssembly().GetType(name);
             if (resultType == null)
                 return null;
 
-            return Mapper.Map(entity, entity.GetType(), resultType);
+            return Mapper.Map(obj, className.GetType(), resultType);
         }
     }
 }

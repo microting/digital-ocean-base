@@ -135,7 +135,7 @@ namespace Microting.DigitalOceanBase.Managers
                 dbImage.Public = item.Public;
                 dbImage.Status = item.Status;
                 dbImage.UpdatedByUserId = userId;
-                await dbImage.Update<Image>(_dbContext);
+                await dbImage.Update(_dbContext);
             }
 
             foreach (var item in storedImages)
@@ -144,7 +144,7 @@ namespace Microting.DigitalOceanBase.Managers
                 if (image == null)
                 {
                     item.UpdatedByUserId = userId;
-                    await item.Delete<Image>(_dbContext);
+                    await item.Delete(_dbContext);
                 }
             }
         }
@@ -206,7 +206,7 @@ namespace Microting.DigitalOceanBase.Managers
             thisDroplet.RequestedImageName = apiDroplet.RequestedImageName;
             thisDroplet.RequestedImageId = apiDroplet.RequestedImageId;
             thisDroplet.UpdatedByUserId = userId;
-            await thisDroplet.Update<Droplet>(_dbContext);
+            await thisDroplet.Update(_dbContext);
 
             Size dbSize = await _dbContext.Sizes.SingleOrDefaultAsync(x => x.Id == thisDroplet.Sizeid);
             if (dbSize != null)
@@ -222,7 +222,7 @@ namespace Microting.DigitalOceanBase.Managers
                 dbSize.DropletId = thisDroplet.Id;
                 //size.Droplet = null;
                 //size.SizeRegions = null;
-                await dbSize.Update<Size>(_dbContext);
+                await dbSize.Update(_dbContext);
             }
 
             return dbDroplet;
@@ -238,12 +238,12 @@ namespace Microting.DigitalOceanBase.Managers
                     Size size = await _dbContext.Sizes.SingleOrDefaultAsync(x => x.Id == removedDroplet.Sizeid);
                     if (size != null)
                     {
-                        await size.Delete<Size>(_dbContext);
+                        await size.Delete(_dbContext);
                     }
 
                     droplet = await _dbContext.Droplets.SingleAsync(x => x.Id == item.Id);
                     droplet.UpdatedByUserId = userId;
-                    await droplet.Delete<Droplet>(_dbContext);
+                    await droplet.Delete(_dbContext);
 
                     var dTags = item.DropletTags.Select(t => new DropletTag() { Droplet = removedDroplet, Tag = t.Tag }).ToList();
                     foreach (var dt in dTags)
@@ -253,7 +253,7 @@ namespace Microting.DigitalOceanBase.Managers
                         {
                             //dt.Id = Enumerable.Max(ids);
                             dbDt.UpdatedByUserId = userId;
-                            await dbDt.Delete<DropletTag>(_dbContext);
+                            await dbDt.Delete(_dbContext);
                         }
                     }
             }
