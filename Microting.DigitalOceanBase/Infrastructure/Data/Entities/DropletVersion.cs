@@ -26,5 +26,9 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data.Entities
 
         [ForeignKey("Id")]
         public int Sizeid { get; set; }
+
+        public bool Locked { get; set; }
+
+        public string Status { get; set; }
     }
 }
