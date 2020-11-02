@@ -8,7 +8,7 @@ namespace Microting.DigitalOceanBase.Infrastructure.Data
     {
         public DigitalOceanDbContext CreateDbContext(string[] args)
         {
-            var defaultCs = "Server = localhost; port = 3306; Database = dobasedb; user = root; Convert Zero Datetime = true;";
+            var defaultCs = "Server = localhost; port = 3306; Database = dobasedb; user = root; password = secretpassword; Convert Zero Datetime = true;";
             var optionsBuilder = new DbContextOptionsBuilder<DigitalOceanDbContext>();
             optionsBuilder.UseMySql(args.Any() ? args[0]: defaultCs);
 
