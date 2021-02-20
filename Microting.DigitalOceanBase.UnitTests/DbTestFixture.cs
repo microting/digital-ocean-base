@@ -37,31 +37,44 @@ namespace Microting.DigitalOceanBase.UnitTests
 
         private async Task ClearDb()
         {
-            List<string> modelNames = new List<string>();
-            modelNames.Add("PluginConfigurationValues");
-            modelNames.Add("Droplets");
-            modelNames.Add("DropletVersions");
-            modelNames.Add("DropletTag");
-            modelNames.Add("DropletTagVersions");
-            modelNames.Add("Images");
-            modelNames.Add("ImageVersions");
-            modelNames.Add("Regions");
-            modelNames.Add("SizeRegion");
-            modelNames.Add("SizeRegionVersions");
-            modelNames.Add("Sizes");
-            modelNames.Add("SizeVersions");
-            modelNames.Add("Tags");
+            List<string> modelNames = new List<string>
+            {
+                "PluginConfigurationValues",
+                "Droplets",
+                "DropletVersions",
+                "DropletTag",
+                "DropletTagVersions",
+                "Images",
+                "ImageVersions",
+                "Regions",
+                "SizeRegion",
+                "SizeRegionVersions",
+                "Sizes",
+                "SizeVersions",
+                "Tags"
+            };
+            bool firstRunNotDone = true;
 
             foreach (var modelName in modelNames)
             {
                 try
                 {
-                    var sqlCmd = $"SET FOREIGN_KEY_CHECKS = 0;TRUNCATE `{modelName}`";
-                    await DbContext.Database.ExecuteSqlRawAsync(sqlCmd);
+                    if (firstRunNotDone)
+                    {
+                        await DbContext.Database.ExecuteSqlRawAsync(
+                            $"SET FOREIGN_KEY_CHECKS = 0;TRUNCATE `dobasedb`.`{modelName}`");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    if (ex.Message == "Unknown database 'dobasedb'")
+                    {
+                        firstRunNotDone = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                 }
             }
         }

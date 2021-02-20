@@ -1,9 +1,7 @@
-name: .NET Core
+name: .NET Master
 
 on:
   push:
-    branches: [ master, stable ]
-  pull_request:
     branches: [ master, stable ]
 
 jobs:
