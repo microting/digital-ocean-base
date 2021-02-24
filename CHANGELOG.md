@@ -1,5 +1,19 @@
 # Changelog
 
+## [v2.0.78](https://github.com/microting/digital-ocean-base/tree/v2.0.78) (2021-02-24)
+
+[Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.0.77...v2.0.78)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormApi.BasePn from 2.0.97 to 2.0.98 [\#34](https://github.com/microting/digital-ocean-base/issues/34)
+- Bump Microting.eForm from 4.4.1 to 4.4.2 [\#33](https://github.com/microting/digital-ocean-base/issues/33)
+
+**Merged pull requests:**
+
+- Bump Microsoft.NET.Test.Sdk from 16.6.1 to 16.9.1 [\#32](https://github.com/microting/digital-ocean-base/pull/32) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+- Bump Moq from 4.14.5 to 4.16.1 [\#31](https://github.com/microting/digital-ocean-base/pull/31) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
 ## [v2.0.77](https://github.com/microting/digital-ocean-base/tree/v2.0.77) (2021-02-20)
 
 [Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.0.76...v2.0.77)
