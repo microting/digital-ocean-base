@@ -1,5 +1,14 @@
 # Changelog
 
+## [v2.0.86](https://github.com/microting/digital-ocean-base/tree/v2.0.86) (2021-04-04)
+
+[Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.0.85...v2.0.86)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormApi.BasePn from 2.0.109 to 2.0.110 [\#61](https://github.com/microting/digital-ocean-base/issues/61)
+- Bump Microting.eForm from 4.4.16 to 4.4.17 [\#60](https://github.com/microting/digital-ocean-base/issues/60)
+
 ## [v2.0.85](https://github.com/microting/digital-ocean-base/tree/v2.0.85) (2021-04-02)
 
 [Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.0.84...v2.0.85)
