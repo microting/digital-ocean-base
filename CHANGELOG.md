@@ -1,5 +1,14 @@
 # Changelog
 
+## [v2.0.100](https://github.com/microting/digital-ocean-base/tree/v2.0.100) (2021-04-21)
+
+[Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.0.99...v2.0.100)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormApi.BasePn from 2.0.129 to 2.1.0 [\#93](https://github.com/microting/digital-ocean-base/issues/93)
+- Bump Microting.eForm from 4.4.38 to 4.5.0 [\#92](https://github.com/microting/digital-ocean-base/issues/92)
+
 ## [v2.0.99](https://github.com/microting/digital-ocean-base/tree/v2.0.99) (2021-04-20)
 
 [Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.0.98...v2.0.99)
@@ -196,18 +205,16 @@
 
 - Bump Microting.eFormApi.BasePn from 2.0.97 to 2.0.98 [\#34](https://github.com/microting/digital-ocean-base/issues/34)
 - Bump Microting.eForm from 4.4.1 to 4.4.2 [\#33](https://github.com/microting/digital-ocean-base/issues/33)
+- Bump Microting.eFormApi.BasePn from 2.0.96 to 2.0.97 [\#30](https://github.com/microting/digital-ocean-base/issues/30)
 
 **Merged pull requests:**
 
+- Bump Microsoft.NET.Test.Sdk from 16.6.1 to 16.9.1 [\#32](https://github.com/microting/digital-ocean-base/pull/32) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - Bump Moq from 4.14.5 to 4.16.1 [\#31](https://github.com/microting/digital-ocean-base/pull/31) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 
 ## [v2.0.77](https://github.com/microting/digital-ocean-base/tree/v2.0.77) (2021-02-20)
 
 [Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.0.76...v2.0.77)
-
-**Implemented enhancements:**
-
-- Bump Microting.eFormApi.BasePn from 2.0.96 to 2.0.97 [\#30](https://github.com/microting/digital-ocean-base/issues/30)
 
 ## [v2.0.76](https://github.com/microting/digital-ocean-base/tree/v2.0.76) (2021-02-20)
 
@@ -543,7 +550,6 @@
 
 **Merged pull requests:**
 
-- Bump Microsoft.NET.Test.Sdk from 16.6.1 to 16.9.1 [\#32](https://github.com/microting/digital-ocean-base/pull/32) ([dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
 - added versions table [\#10](https://github.com/microting/digital-ocean-base/pull/10) ([cazac9](https://github.com/cazac9))
 
 ## [v1.0.6](https://github.com/microting/digital-ocean-base/tree/v1.0.6) (2020-07-22)
@@ -573,6 +579,7 @@
 **Merged pull requests:**
 
 - fixed unittests [\#7](https://github.com/microting/digital-ocean-base/pull/7) ([cazac9](https://github.com/cazac9))
+- added images [\#2](https://github.com/microting/digital-ocean-base/pull/2) ([cazac9](https://github.com/cazac9))
 
 ## [v1.0.2](https://github.com/microting/digital-ocean-base/tree/v1.0.2) (2020-07-20)
 
@@ -595,7 +602,6 @@
 
 - final version [\#4](https://github.com/microting/digital-ocean-base/pull/4) ([cazac9](https://github.com/cazac9))
 - main logic [\#3](https://github.com/microting/digital-ocean-base/pull/3) ([cazac9](https://github.com/cazac9))
-- added images [\#2](https://github.com/microting/digital-ocean-base/pull/2) ([cazac9](https://github.com/cazac9))
 - added sizes and regions [\#1](https://github.com/microting/digital-ocean-base/pull/1) ([cazac9](https://github.com/cazac9))
 
 
