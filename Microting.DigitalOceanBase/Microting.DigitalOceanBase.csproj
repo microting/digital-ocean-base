@@ -3,27 +3,27 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <PackageId>Microting.DigitalOceanBase</PackageId>
     <Authors>René Schultz Madsen</Authors>
     <Company>Microting A/S</Company>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <None Remove="Managers\DigitalOceanManager.cs~RF8329d1e.TMP" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DigitalOcean.API" Version="5.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.14">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.14" />
     <PackageReference Include="Microting.eForm" Version="4.5.0" />
     <PackageReference Include="Microting.eFormApi.BasePn" Version="2.1.0" />
   </ItemGroup>
