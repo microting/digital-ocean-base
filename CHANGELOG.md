@@ -1,5 +1,18 @@
 # Changelog
 
+## [v2.1.1](https://github.com/microting/digital-ocean-base/tree/v2.1.1) (2021-04-26)
+
+[Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.1.0...v2.1.1)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormApi.BasePn from 2.1.0 to 2.1.1 [\#95](https://github.com/microting/digital-ocean-base/issues/95)
+- Bump Microting.eForm from 4.5.0 to 4.5.1 [\#94](https://github.com/microting/digital-ocean-base/issues/94)
+
+## [v2.1.0](https://github.com/microting/digital-ocean-base/tree/v2.1.0) (2021-04-21)
+
+[Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.0.100...v2.1.0)
+
 ## [v2.0.100](https://github.com/microting/digital-ocean-base/tree/v2.0.100) (2021-04-21)
 
 [Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.0.99...v2.0.100)
@@ -579,7 +592,6 @@
 **Merged pull requests:**
 
 - fixed unittests [\#7](https://github.com/microting/digital-ocean-base/pull/7) ([cazac9](https://github.com/cazac9))
-- added images [\#2](https://github.com/microting/digital-ocean-base/pull/2) ([cazac9](https://github.com/cazac9))
 
 ## [v1.0.2](https://github.com/microting/digital-ocean-base/tree/v1.0.2) (2020-07-20)
 
@@ -602,6 +614,7 @@
 
 - final version [\#4](https://github.com/microting/digital-ocean-base/pull/4) ([cazac9](https://github.com/cazac9))
 - main logic [\#3](https://github.com/microting/digital-ocean-base/pull/3) ([cazac9](https://github.com/cazac9))
+- added images [\#2](https://github.com/microting/digital-ocean-base/pull/2) ([cazac9](https://github.com/cazac9))
 - added sizes and regions [\#1](https://github.com/microting/digital-ocean-base/pull/1) ([cazac9](https://github.com/cazac9))
 
 
