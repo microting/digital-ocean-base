@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29926.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microting.DigitalOceanBase", "Microting.DigitalOceanBase\Microting.DigitalOceanBase.csproj", "{EF331E82-8033-48EA-942A-1BAB508996D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microting.DigitalOceanBase", "Microting.DigitalOceanBase\Microting.DigitalOceanBase.csproj", "{EF5.0.02-8033-48EA-942A-1BAB508996D3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microting.DigitalOceanBase.App", "Microting.DigitalOceanBase.App\Microting.DigitalOceanBase.App.csproj", "{641D818E-D127-4738-A7EF-FAEE06F56D8F}"
 EndProject
@@ -19,10 +19,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EF331E82-8033-48EA-942A-1BAB508996D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF331E82-8033-48EA-942A-1BAB508996D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF331E82-8033-48EA-942A-1BAB508996D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF331E82-8033-48EA-942A-1BAB508996D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF5.0.02-8033-48EA-942A-1BAB508996D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF5.0.02-8033-48EA-942A-1BAB508996D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF5.0.02-8033-48EA-942A-1BAB508996D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF5.0.02-8033-48EA-942A-1BAB508996D3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{641D818E-D127-4738-A7EF-FAEE06F56D8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{641D818E-D127-4738-A7EF-FAEE06F56D8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{641D818E-D127-4738-A7EF-FAEE06F56D8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
