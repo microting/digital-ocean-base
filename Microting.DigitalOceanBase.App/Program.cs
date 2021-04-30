@@ -22,7 +22,11 @@ namespace Microting.DigitalOceanBase.App
 
             var serviceProvider = new ServiceCollection()
                 .AddDbContext<DigitalOceanDbContext>(options =>
-                            options.UseMySql("Server = localhost; port = 3306; Database = dobasedb; user = root; Convert Zero Datetime = true;"))
+                            options.UseMySql("Server = localhost; port = 3306; Database = dobasedb; user = root; Convert Zero Datetime = true;", new MariaDbServerVersion(
+                                new Version(10, 4, 0)), mySqlOptionsAction: builder =>
+                            {
+                                builder.EnableRetryOnFailure();
+                            }))
                .AddDigitalOceanBaseServices()
                .BuildServiceProvider();
 
@@ -44,7 +48,7 @@ namespace Microting.DigitalOceanBase.App
                 //    Image = "ubuntu-16-04-x64",
                 //    Tags =  new System.Collections.Generic.List<string>() { "test", "Test2"},
                 //    Ipv6 = true,
-                //    PrivateNetworking = true, 
+                //    PrivateNetworking = true,
                 //    Monitoring = true,
                 //}));
             }
@@ -53,7 +57,7 @@ namespace Microting.DigitalOceanBase.App
 
                 throw;
             }
-           
+
             //Console.WriteLine("Done");
             //Console.ReadLine();
         }
