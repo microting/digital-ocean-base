@@ -1,5 +1,14 @@
 # Changelog
 
+## [v2.1.6](https://github.com/microting/digital-ocean-base/tree/v2.1.6) (2021-05-04)
+
+[Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.1.5...v2.1.6)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormApi.BasePn from 3.0.3 to 3.0.4 [\#108](https://github.com/microting/digital-ocean-base/issues/108)
+- Bump Microting.eForm from 5.0.4 to 5.1.0 [\#107](https://github.com/microting/digital-ocean-base/issues/107)
+
 ## [v2.1.5](https://github.com/microting/digital-ocean-base/tree/v2.1.5) (2021-05-03)
 
 [Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.1.4...v2.1.5)
@@ -235,6 +244,7 @@
 
 - Bump Microting.eFormApi.BasePn from 2.0.99 to 2.0.101 [\#45](https://github.com/microting/digital-ocean-base/issues/45)
 - Bump Microting.eForm from 4.4.3 to 4.4.6 [\#44](https://github.com/microting/digital-ocean-base/issues/44)
+- Bump Microting.eFormApi.BasePn from 2.0.97 to 2.0.98 [\#34](https://github.com/microting/digital-ocean-base/issues/34)
 
 ## [v2.0.79](https://github.com/microting/digital-ocean-base/tree/v2.0.79) (2021-03-05)
 
@@ -242,7 +252,7 @@
 
 **Implemented enhancements:**
 
-- Bump Microting.eForm from 4.4.2 to 4.4.3 [\#36](https://github.com/microting/digital-ocean-base/issues/36)
+- Bump Microting.eFormApi.BasePn from 2.0.98 to 2.0.99 [\#37](https://github.com/microting/digital-ocean-base/issues/37)
 
 ## [v2.0.78](https://github.com/microting/digital-ocean-base/tree/v2.0.78) (2021-02-24)
 
@@ -250,7 +260,6 @@
 
 **Implemented enhancements:**
 
-- Bump Microting.eFormApi.BasePn from 2.0.97 to 2.0.98 [\#34](https://github.com/microting/digital-ocean-base/issues/34)
 - Bump Microting.eForm from 4.4.1 to 4.4.2 [\#33](https://github.com/microting/digital-ocean-base/issues/33)
 
 **Merged pull requests:**
@@ -264,7 +273,7 @@
 
 **Implemented enhancements:**
 
-- Bump Microting.eFormApi.BasePn from 2.0.98 to 2.0.99 [\#37](https://github.com/microting/digital-ocean-base/issues/37)
+- Bump Microting.eForm from 4.4.2 to 4.4.3 [\#36](https://github.com/microting/digital-ocean-base/issues/36)
 - Bump Microting.eFormApi.BasePn from 2.0.96 to 2.0.97 [\#30](https://github.com/microting/digital-ocean-base/issues/30)
 
 ## [v2.0.76](https://github.com/microting/digital-ocean-base/tree/v2.0.76) (2021-02-20)
