@@ -1,5 +1,14 @@
 # Changelog
 
+## [v2.1.26](https://github.com/microting/digital-ocean-base/tree/v2.1.26) (2021-06-26)
+
+[Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.1.25...v2.1.26)
+
+**Implemented enhancements:**
+
+- Bump Microting.eFormApi.BasePn from 3.0.23 to 3.0.24 [\#160](https://github.com/microting/digital-ocean-base/issues/160)
+- Bump Microting.eForm from 5.2.12 to 5.2.13 [\#159](https://github.com/microting/digital-ocean-base/issues/159)
+
 ## [v2.1.25](https://github.com/microting/digital-ocean-base/tree/v2.1.25) (2021-06-24)
 
 [Full Changelog](https://github.com/microting/digital-ocean-base/compare/v2.1.24...v2.1.25)
@@ -265,7 +274,6 @@
 **Implemented enhancements:**
 
 - Bump Microting.eFormApi.BasePn from 2.0.122 to 2.0.126 [\#85](https://github.com/microting/digital-ocean-base/issues/85)
-- Bump Microting.eForm from 4.4.31 to 4.4.35 [\#84](https://github.com/microting/digital-ocean-base/issues/84)
 
 ## [v2.0.95](https://github.com/microting/digital-ocean-base/tree/v2.0.95) (2021-04-14)
 
@@ -282,6 +290,7 @@
 
 **Implemented enhancements:**
 
+- Bump Microting.eForm from 4.4.31 to 4.4.35 [\#84](https://github.com/microting/digital-ocean-base/issues/84)
 - Bump Microting.eFormApi.BasePn from 2.0.118 to 2.0.120 [\#81](https://github.com/microting/digital-ocean-base/issues/81)
 - Bump Microting.eForm from 4.4.27 to 4.4.29 [\#80](https://github.com/microting/digital-ocean-base/issues/80)
 
@@ -345,7 +354,6 @@
 **Implemented enhancements:**
 
 - Bump Microting.eFormApi.BasePn from 2.0.110 to 2.0.111 [\#64](https://github.com/microting/digital-ocean-base/issues/64)
-- Bump Microting.eForm from 4.4.17 to 4.4.19 [\#63](https://github.com/microting/digital-ocean-base/issues/63)
 
 ## [v2.0.86](https://github.com/microting/digital-ocean-base/tree/v2.0.86) (2021-04-04)
 
@@ -362,6 +370,7 @@
 
 **Implemented enhancements:**
 
+- Bump Microting.eForm from 4.4.17 to 4.4.19 [\#63](https://github.com/microting/digital-ocean-base/issues/63)
 - Bump Microting.eFormApi.BasePn from 2.0.107 to 2.0.109 [\#59](https://github.com/microting/digital-ocean-base/issues/59)
 - Bump Microting.eForm from 4.4.13 to 4.4.16 [\#58](https://github.com/microting/digital-ocean-base/issues/58)
 
@@ -391,6 +400,7 @@
 
 - Bump Microting.eFormApi.BasePn from 2.0.103 to 2.0.104 [\#51](https://github.com/microting/digital-ocean-base/issues/51)
 - Bump Microting.eForm from 4.4.8 to 4.4.9 [\#50](https://github.com/microting/digital-ocean-base/issues/50)
+- Bump Microting.eFormApi.BasePn from 2.0.98 to 2.0.99 [\#37](https://github.com/microting/digital-ocean-base/issues/37)
 
 ## [v2.0.81](https://github.com/microting/digital-ocean-base/tree/v2.0.81) (2021-03-16)
 
@@ -400,7 +410,6 @@
 
 - Bump Microting.eFormApi.BasePn from 2.0.101 to 2.0.103 [\#49](https://github.com/microting/digital-ocean-base/issues/49)
 - Bump Microting.eForm from 4.4.6 to 4.4.8 [\#48](https://github.com/microting/digital-ocean-base/issues/48)
-- Bump Microting.eForm from 4.4.3 to 4.4.6 [\#44](https://github.com/microting/digital-ocean-base/issues/44)
 
 ## [v2.0.80](https://github.com/microting/digital-ocean-base/tree/v2.0.80) (2021-03-11)
 
@@ -409,6 +418,7 @@
 **Implemented enhancements:**
 
 - Bump Microting.eFormApi.BasePn from 2.0.99 to 2.0.101 [\#45](https://github.com/microting/digital-ocean-base/issues/45)
+- Bump Microting.eForm from 4.4.3 to 4.4.6 [\#44](https://github.com/microting/digital-ocean-base/issues/44)
 
 ## [v2.0.79](https://github.com/microting/digital-ocean-base/tree/v2.0.79) (2021-03-05)
 
@@ -416,7 +426,6 @@
 
 **Implemented enhancements:**
 
-- Bump Microting.eFormApi.BasePn from 2.0.98 to 2.0.99 [\#37](https://github.com/microting/digital-ocean-base/issues/37)
 - Bump Microting.eForm from 4.4.2 to 4.4.3 [\#36](https://github.com/microting/digital-ocean-base/issues/36)
 
 ## [v2.0.78](https://github.com/microting/digital-ocean-base/tree/v2.0.78) (2021-02-24)
@@ -784,7 +793,6 @@
 **Merged pull requests:**
 
 - added mock api client [\#9](https://github.com/microting/digital-ocean-base/pull/9) ([cazac9](https://github.com/cazac9))
-- refactoring [\#6](https://github.com/microting/digital-ocean-base/pull/6) ([cazac9](https://github.com/cazac9))
 
 ## [v1.0.5](https://github.com/microting/digital-ocean-base/tree/v1.0.5) (2020-07-21)
 
@@ -816,6 +824,7 @@
 
 **Merged pull requests:**
 
+- refactoring [\#6](https://github.com/microting/digital-ocean-base/pull/6) ([cazac9](https://github.com/cazac9))
 - changed mysql db provider [\#5](https://github.com/microting/digital-ocean-base/pull/5) ([cazac9](https://github.com/cazac9))
 
 ## [v1.0.0](https://github.com/microting/digital-ocean-base/tree/v1.0.0) (2020-07-15)
